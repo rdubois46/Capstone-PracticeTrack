@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/capstone-practice-track.iml" filepath="$PROJECT_DIR$/.idea/modules/capstone-practice-track.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/capstone-practice-track.main.iml" filepath="$PROJECT_DIR$/.idea/modules/capstone-practice-track.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/capstone-practice-track.test.iml" filepath="$PROJECT_DIR$/.idea/modules/capstone-practice-track.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/capstone-practice-track/src/main/main.iml" filepath="$PROJECT_DIR$/capstone-practice-track/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/capstone-practice-track/src/test/test.iml" filepath="$PROJECT_DIR$/capstone-practice-track/src/test/test.iml" />
+    </modules>
+  </component>
+</project>
