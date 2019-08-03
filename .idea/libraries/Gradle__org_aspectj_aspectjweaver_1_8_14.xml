@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.aspectj:aspectjweaver:1.8.14">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.14/d95689587d8f39c1ae35523eadac06fe760b2697/aspectjweaver-1.8.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.14/a4fb71a419aaa034343892d20eb4385468f2f717/aspectjweaver-1.8.14-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

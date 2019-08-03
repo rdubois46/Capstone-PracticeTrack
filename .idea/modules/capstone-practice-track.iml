@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$/../../capstone-practice-track">
       <excludeFolder url="file://$MODULE_DIR$/../../capstone-practice-track/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../capstone-practice-track/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../capstone-practice-track/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
