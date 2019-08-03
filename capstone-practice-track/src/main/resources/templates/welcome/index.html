@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+<nav th:replace="fragments :: navigation"></nav>
+
+<form method="post">
+    <div class="form-group">
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username" />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password: </label>
+        <input type="text" id="password" name="password" />
+    </div>
+
+    <input type="submit" value="Log In" />
+</form>
 
 </body>
 </html>

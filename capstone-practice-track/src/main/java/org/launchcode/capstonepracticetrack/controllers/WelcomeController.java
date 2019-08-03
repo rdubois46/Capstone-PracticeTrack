@@ -18,7 +18,7 @@ public class WelcomeController {
 
         model.addAttribute("title", "Welcome to PracticeTrack!");
 
-        return "welcome/login";
+        return "welcome/index";
     }
 
 
