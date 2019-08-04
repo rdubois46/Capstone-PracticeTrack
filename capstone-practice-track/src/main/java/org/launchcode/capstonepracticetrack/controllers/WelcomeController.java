@@ -9,8 +9,10 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("welcome")
@@ -19,11 +21,36 @@ public class WelcomeController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "")
-    public String login(Model model) {
+    @RequestMapping(value = "Login", method = RequestMethod.GET)
+    public String viewLogin(Model model) {
         model.addAttribute("title", "Welcome to PracticeTrack!");
 
         return "welcome/index";
+    }
+
+    @RequestMapping(value = "Login", method = RequestMethod.POST)
+    public String processLogin(Model model, @RequestParam String username, @RequestParam String password) {
+        List<User> userList = userDao.findByUsername(username);
+
+        if (userList.isEmpty()) {
+            model.addAttribute("nameError", "User does not exist!");
+            model.addAttribute("title", "Welcome to PracticeTrack!");
+            return "welcome/index";
+        }
+
+        User currentUser =  userList.get(0);
+
+        if (!currentUser.getPassword().equals(password)) {
+            model.addAttribute("username", username);
+            model.addAttribute("passwordError", "Incorrect password!");
+            model.addAttribute("title", "Welcome to PracticeTrack!");
+            return "welcome/index";
+        }
+
+        model.addAttribute("title", "Login Success! Welcome, " + username + "!");
+
+        return "welcome/success";
+
     }
 
     @RequestMapping(value="NewAccount", method = RequestMethod.GET)
@@ -60,10 +87,10 @@ public class WelcomeController {
             model.addAttribute("title", "Create an Account");
             return "welcome/create-account";
         } else {
-            model.addAttribute("title", "Registration Success!");
+            model.addAttribute("title", "Registration Success! Welcome, " + user.getUsername() + "!");
 
             userDao.save(user);
-            return "welcome/index";
+            return "welcome/success";
         }
     }
 
