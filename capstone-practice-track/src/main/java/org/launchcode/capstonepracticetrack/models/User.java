@@ -18,14 +18,14 @@ public class User {
     private int id;
 
     @NotNull
-    @Size(min = 3, max = 15)
+    @Size(min = 3, max = 15, message = "Username must be 5 - 15 characters." )
     private String username;
 
     @Email
     private String email;
 
     @NotNull
-    @Size(min = 5, message = "Password must be at least 5 characters.")
+    @Size(min = 5, max = 15, message = "Password must be 5 - 15 characters.")
     private String password;
 
     public User () {

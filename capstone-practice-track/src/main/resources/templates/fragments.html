@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <style> .error {
             color: red;
             }
@@ -17,8 +18,8 @@
 <body>
 
 <nav th:fragment="navigation">
-    <a href="@{/welcome}">Login Page</a> |
-    <a href="@{/welcome/NewAccount}">Create Account</a>
+    <a th:href="@{'/welcome'}">Login Page</a> |
+    <a th:href="@{'/welcome/NewAccount'}">Create Account</a>
 </nav>
 
 </body>
