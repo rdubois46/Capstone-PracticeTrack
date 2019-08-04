@@ -4,17 +4,17 @@ package org.launchcode.capstonepracticetrack.models;
 
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
 
-    @GeneratedValue
     @Id
+    @GeneratedValue
     private int id;
 
     @NotNull
@@ -27,6 +27,14 @@ public class User {
     @NotNull
     @Size(min = 5, max = 15, message = "Password must be 5 - 15 characters.")
     private String password;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Instrument> instruments = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Session> sessions = new ArrayList<>();
 
     public User () {
 
@@ -62,6 +70,23 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    public List<Instrument> getInstruments() {
+        return instruments;
+    }
+
+    public void setInstruments(List<Instrument> instruments) {
+        this.instruments = instruments;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 }
 
