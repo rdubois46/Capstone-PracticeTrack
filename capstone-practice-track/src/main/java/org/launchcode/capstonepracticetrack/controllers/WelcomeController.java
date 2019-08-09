@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-
 @Controller
 @RequestMapping("welcome")
 public class WelcomeController {
@@ -29,7 +29,7 @@ public class WelcomeController {
     }
 
     @RequestMapping(value = "Login", method = RequestMethod.POST)
-    public String processLogin(Model model, @RequestParam String username, @RequestParam String password) {
+    public String processLogin(Model model, @RequestParam String username, @RequestParam String password, HttpSession session) {
         List<User> userList = userDao.findByUsername(username);
 
         if (userList.isEmpty()) {
@@ -47,7 +47,9 @@ public class WelcomeController {
             return "welcome/index";
         }
 
+        session.setAttribute("user", currentUser);
         model.addAttribute("title", "Login Success! Welcome, " + username + "!");
+
 
         return "welcome/success";
 
