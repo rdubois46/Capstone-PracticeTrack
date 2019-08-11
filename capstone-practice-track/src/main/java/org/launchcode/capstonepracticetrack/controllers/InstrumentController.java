@@ -40,7 +40,7 @@ public class InstrumentController {
     }
 
     @RequestMapping(value="add/{id}", method = RequestMethod.POST)
-    public String processAddInstrument(@ModelAttribute @Valid Instrument instrument, Model model, Errors errors, @PathVariable int id) {
+    public String processAddInstrument(Model model, @ModelAttribute @Valid Instrument instrument, Errors errors, @PathVariable int id) {
 
 
         if (errors.hasErrors()) {
