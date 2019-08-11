@@ -24,10 +24,11 @@ public class ProfileController {
 
         User currentUser = userDao.findOne(id);
 
-        List<Instrument> userInstruments = currentUser.getInstruments();
+        Iterable<Instrument> userInstruments = currentUser.getInstruments();
 
         model.addAttribute("appName", "PracticeTrack");
         model.addAttribute("title", "Welcome, " + currentUser.getUsername() + "!");
+        model.addAttribute("userId", id);
         model.addAttribute("instruments", userInstruments);
 
         return "profile/index";
