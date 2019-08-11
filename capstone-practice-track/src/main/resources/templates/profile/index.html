@@ -8,7 +8,7 @@
 
 <div th:if="${instruments != null and !instruments.empty}">
     <h2>Select an Instrument: </h2>
-    <ul th:each="${instrument :: instruments}">
+    <ul th:each="instrument : ${instruments}">
         <li text="${instrument.name}"></li>
     </ul>
 </div>

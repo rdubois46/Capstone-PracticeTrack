@@ -21,14 +21,14 @@ public class WelcomeController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "Login", method = RequestMethod.GET)
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     public String viewLogin(Model model) {
         model.addAttribute("title", "Welcome to PracticeTrack!");
 
         return "welcome/index";
     }
 
-    @RequestMapping(value = "Login", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public String processLogin(Model model, @RequestParam String username, @RequestParam String password) {
         List<User> userList = userDao.findByUsername(username);
 
@@ -53,7 +53,7 @@ public class WelcomeController {
 
     }
 
-    @RequestMapping(value="NewAccount", method = RequestMethod.GET)
+    @RequestMapping(value="newAccount", method = RequestMethod.GET)
     public String viewNewAccountForm(Model model, @ModelAttribute User user ) {
         model.addAttribute("user", user);
         model.addAttribute("title", "Create an Account");
@@ -62,7 +62,7 @@ public class WelcomeController {
         return "welcome/create-account";
     }
 
-    @RequestMapping(value="NewAccount", method = RequestMethod.POST)
+    @RequestMapping(value="newAccount", method = RequestMethod.POST)
     public String processNewAccountForm(Model model, @ModelAttribute @Valid User user, Errors errors, String verify) {
 
         if (verify.isEmpty()) {

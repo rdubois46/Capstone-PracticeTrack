@@ -44,6 +44,11 @@ public class User {
         this.username = username;
     }
 
+
+    public void addInstrument(Instrument instrument) {
+        this.instruments.add(instrument);
+    }
+
     public int getId() {
         return id;
     }
@@ -71,7 +76,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public List<Instrument> getInstruments() {
         return instruments;
