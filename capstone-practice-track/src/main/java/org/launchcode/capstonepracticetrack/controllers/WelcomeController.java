@@ -49,7 +49,7 @@ public class WelcomeController {
 
         model.addAttribute("title", "Login Success! Welcome, " + username + "!");
 
-        return "welcome/success";
+        return "redirect:/profile/" + currentUser.getId();
 
     }
 
@@ -90,7 +90,7 @@ public class WelcomeController {
             model.addAttribute("title", "Registration Success! Welcome, " + user.getUsername() + "!");
 
             userDao.save(user);
-            return "welcome/success";
+            return "redirect:/profile/" + user.getId();
         }
     }
 
