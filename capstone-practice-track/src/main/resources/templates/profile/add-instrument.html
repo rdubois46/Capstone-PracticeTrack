@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<h2 th:replace="fragments :: appName"></h2>
+<h1 th:text="${title}">Default Title</h1>
+
+
+<div th:if="${instruments != null and !instruments.empty}">
+    <h2>Current Instruments </h2>
+    <ul th:each="${instrument :: instruments}">
+        <li text="${instrument.name}"></li>
+    </ul>
+</div>
+
+<div th:if="${instruments == null or instruments.empty}">
+    <h2>No Instruments Yet!</h2>
+</div>
+
+</body>
+</html>

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Controller("instrument")
+@Controller
+@RequestMapping("instrument")
 public class InstrumentController {
 
     @Autowired
@@ -27,7 +28,6 @@ public class InstrumentController {
 
         model.addAttribute("title", "Add an Instrument");
         model.addAttribute("instruments", instruments);
-
 
         return "profile/add-instrument";
     }
