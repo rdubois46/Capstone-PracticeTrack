@@ -42,6 +42,10 @@ public class Instrument {
         this.active = true;
     }
 
+    public void addSkill(Skill skill) {
+        this.skills.add(skill);
+    }
+
     public int getId() {
         return id;
     }
@@ -85,4 +89,5 @@ public class Instrument {
     public void setSessions(List<Session> sessions) {
         this.sessions = sessions;
     }
+
 }
