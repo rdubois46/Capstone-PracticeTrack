@@ -29,10 +29,10 @@ public class InstrumentController {
     @RequestMapping(value="add/{id}", method = RequestMethod.GET)
     public String viewInstrumentAddPage(Model model, @PathVariable int id) {
 
-        Iterable<Instrument> instruments = instrumentDao.findByUser_id(id);
+        Iterable<Instrument> currentInstruments = instrumentDao.findByUser_id(id);
 
         model.addAttribute("title", "Add an Instrument");
-        model.addAttribute("instruments", instruments);
+        model.addAttribute("instruments", currentInstruments);
         model.addAttribute("userId", id);
         model.addAttribute(new Instrument());
 
