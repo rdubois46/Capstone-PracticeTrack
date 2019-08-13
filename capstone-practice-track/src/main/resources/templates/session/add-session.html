@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<h2 th:replace="fragments :: appName"></h2>
+<h1 th:text="${title}">Default Title</h1>
+
+<h3>How will you be entering this practice info?</h3>
+<form action="/session/data-entry" method="post">
+    <h4>Skill Choice</h4>
+    <div class="form-group">
+        <div>
+            <input type="radio" id="skill-choice-list" name="skillChoice" value="list" />
+            <label for="skill-choice-list">Select Skill from list</label>
+        </div>
+        <div>
+            <input type="radio" id="skill-choice-manual" name="skillChoice" value="manual" checked="checked" />
+            <label for="skill-choice-manual">Enter Skill manually</label>
+        </div>
+    </div>
+    <h4>Timer Choice</h4>
+    <div class="form-group">
+        <div>
+            <input type="radio" id="time-choice-timer" name="timeChoice" value="timer" />
+            <label for="time-choice-timer">Use Timer</label>
+        </div>
+        <div>
+            <input type="radio" id="time-choice-manual" name="timeChoice" value="manual"  checked="checked" />
+            <label for="time-choice-manual">Enter Time manually</label>
+        </div>
+    </div>
+
+    <input type="submit" value="Go!" />
+</form>
+
+
+
+<!--<div th:if="${skills != null and !skills.empty}">
+    <h2 th:text="'Current Skills for ' + ${instrument.name} + ': '"></h2>
+    <ul th:each="skill: ${skills}">
+        <li th:text="${skill.name}"></li>
+    </ul>
+</div>
+
+<div th:if="${skills == null or skills.empty}">
+    <h2 th:text="'No skills for ' + ${instrument.name} + ' yet!'"></h2>
+</div>
+
+<form method="post" th:action="@{'/skill/add/' + ${instrument.id}}" th:object="${skill}">
+    <div class="form-group">
+        <label th:for="skill">Skill name: </label>
+        <input class="form-control" id="skill" type="text" th:field="*{name}" th:value="*{name}" />
+        <span class="error" th:errors="*{name}"></span>
+    </div>
+    <input type="submit" value="Add Skill" />
+</form>-->
+
+<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/welcome/login}">Log Out</a></p>
+
+
+</body>
+</html>
