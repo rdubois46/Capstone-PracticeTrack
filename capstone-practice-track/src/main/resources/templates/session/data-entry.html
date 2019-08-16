@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<h2 th:replace="fragments :: appName"></h2>
+<h1 th:text="${title}">Default Title</h1>
+
+<h3>Enter your practice chunk!</h3>
+
+<div th:if="${skillChoice == 'manual' and timeChoice == 'manual'}">
+    <form th:action="@{'/session/data-entry-validation/' + ${instrument.id}}" method = "post">
+        <div class="form-group">
+            <label for="skill-case-1">Skill: </label>
+            <input id="skill-case-1" type="text" name="enteredSkill" />
+            <span class="error" text="${skillError}"></span>
+        </div>
+        <div class="form-group">
+            <label for="time-case-1">Time: </label>
+            <input id="time-case-1" type="text" name="enteredTime" />
+            <span class="error" text="${timeError}"></span>
+        </div>
+
+        <input type="submit" value="Save It!" />
+    </form>
+</div>
+
+<div th:if="${skillChoice == 'list' and timeChoice == 'manual'}">
+    <form th:action="@{'/session/data-entry-validation/' + ${instrument.id}}" method="post" th:object="${practiceChunk}">
+        <div class="form-group">
+            <label for="skill-case-2">Skill: </label>
+            <select id="skill-case-2" name="skillId">
+                <option th:each="skill : ${skills}"
+                        th:text="${skill.name}"
+                        th:value="${skill}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="time-case-2">Time: </label>
+            <input th:field="*{timeInMinutes}" id="time-case-2" type="text"/>
+            <span class="error" text="${skillError}"></span>
+        </div>
+
+        <input type="submit" value="Save It!" />
+    </form>
+</div>
+
+<div th:if="${skillChoice == 'manual' and timeChoice == 'timer'}">
+</div>
+
+<div th:if="${skillChoice == 'list' and timeChoice == 'timer'}">
+</div>
+
+
+
+<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/welcome/login}">Log Out</a></p>
+
+
+</body>
+</html>
