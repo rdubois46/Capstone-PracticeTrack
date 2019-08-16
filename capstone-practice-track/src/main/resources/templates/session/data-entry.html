@@ -8,7 +8,7 @@
 <h3>Enter your practice chunk!</h3>
 
 <div th:if="${skillChoice == 'manual' and timeChoice == 'manual'}">
-    <form th:action="@{'/session/data-entry-validation/' + ${instrument.id}}" method = "post">
+    <form th:action="@{'/session/data-entry-validation/manual-manual/' + ${instrument.id}}" method = "post">
         <div class="form-group">
             <label for="skill-case-1">Skill: </label>
             <input id="skill-case-1" type="text" name="enteredSkill" />
@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
             <label for="time-case-1">Time: </label>
-            <input id="time-case-1" type="text" name="enteredTime" />
+            <input id="time-case-1" type="number" min="1" step="1" name="enteredTime" />
             <span class="error" text="${timeError}"></span>
         </div>
 
@@ -25,7 +25,7 @@
 </div>
 
 <div th:if="${skillChoice == 'list' and timeChoice == 'manual'}">
-    <form th:action="@{'/session/data-entry-validation/' + ${instrument.id}}" method="post" th:object="${practiceChunk}">
+    <form th:action="@{'/session/data-entry-validation/list-manual/' + ${instrument.id}}" method="post" th:object="${practiceChunk}">
         <div class="form-group">
             <label for="skill-case-2">Skill: </label>
             <select id="skill-case-2" name="skillId">
@@ -36,7 +36,7 @@
         </div>
         <div class="form-group">
             <label for="time-case-2">Time: </label>
-            <input th:field="*{timeInMinutes}" id="time-case-2" type="text"/>
+            <input th:field="*{timeInMinutes}" id="time-case-2" type="number" min="1" step="1"/>
             <span class="error" text="${skillError}"></span>
         </div>
 
@@ -48,6 +48,27 @@
 </div>
 
 <div th:if="${skillChoice == 'list' and timeChoice == 'timer'}">
+</div>
+
+<div th:if="${#lists.isEmpty(currentSession.practiceChunks)}">
+    <h4>-- Nothing in Session yet --</h4>
+</div>
+
+<div th:if="${not #lists.isEmpty(currentSession.practiceChunks)}">
+    <table>
+        <thead>
+            <tr>
+                <th> Skill </th>
+                <th> Time </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="chunk : ${currentSession.practiceChunks}">
+                <td th:text="${chunk.skill.name}"></td>
+                <td th:text="${chunk.timeInMinutes}"></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 
