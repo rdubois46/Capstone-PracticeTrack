@@ -92,7 +92,12 @@ public class SessionController {
         int userId = currentInstrument.getUser().getId();
         Iterable<Skill> givenSkills = currentInstrument.getSkills();
 
+
         if ( enteredSkill.length() < 1 || enteredSkill.length() > 26) {
+
+            ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
+            session.setAttribute("chunkList", chunkList);
+
             model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
             model.addAttribute("instrument", currentInstrument);
             model.addAttribute("skills", givenSkills);
@@ -100,8 +105,28 @@ public class SessionController {
             model.addAttribute("skillChoice", "manual");
             model.addAttribute("timeChoice", "manual");
             model.addAttribute("skillError", "The skill must be 1-25 characters in length.");
+            model.addAttribute("chunkList", chunkList);
 
             return "session/data-entry";
+        }
+
+        if (enteredTime == null || enteredTime.equals("") || Integer.parseInt(enteredTime) < 1) {
+
+            ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
+            session.setAttribute("chunkList", chunkList);
+
+            model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
+            model.addAttribute("instrument", currentInstrument);
+            model.addAttribute("skills", givenSkills);
+            model.addAttribute("userId", userId);
+            model.addAttribute("skillChoice", "manual");
+            model.addAttribute("timeChoice", "manual");
+            model.addAttribute("timeError", "Time entered must be at least 1.");
+            model.addAttribute("chunkList", chunkList);
+            model.addAttribute("enteredSkill", enteredSkill);
+
+            return "session/data-entry";
+
         } else {
 
             // PracticeChunk class will require the time to be converted to "int"

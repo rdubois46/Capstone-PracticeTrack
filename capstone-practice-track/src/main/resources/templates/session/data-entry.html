@@ -11,13 +11,13 @@
     <form th:action="@{'/session/data-entry-validation/manual-manual/' + ${instrument.id}}" method = "post">
         <div class="form-group">
             <label for="skill-case-1">Skill: </label>
-            <input id="skill-case-1" type="text" name="enteredSkill" />
-            <span class="error" text="${skillError}"></span>
+            <input id="skill-case-1" type="text" name="enteredSkill" style="width : 230px;" th:value="${enteredSkill}" />
+            <p class="error" th:text="${skillError}" ></p>
         </div>
         <div class="form-group">
-            <label for="time-case-1">Time: </label>
+            <label for="time-case-1">Time (mins): </label>
             <input id="time-case-1" type="number" min="1" step="1" name="enteredTime" />
-            <span class="error" text="${timeError}"></span>
+            <p class="error" th:text="${timeError}"></p>
         </div>
 
         <input type="submit" value="Save It!" />
@@ -37,7 +37,7 @@
         <div class="form-group">
             <label for="time-case-2">Time: </label>
             <input th:field="*{timeInMinutes}" id="time-case-2" type="number" min="1" step="1"/>
-            <span class="error" text="${skillError}"></span>
+            <span class="error" th:text="${skillError}"></span>
         </div>
 
         <input type="submit" value="Save It!" />
@@ -55,11 +55,11 @@
 </div>
 
 <div th:if="${not #lists.isEmpty(chunkList)}">
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th> Skill </th>
-                <th> Time </th>
+                <th> Time (minutes) </th>
             </tr>
         </thead>
         <tbody>
@@ -71,7 +71,9 @@
     </table>
 </div>
 
-
+<div th:if="${not #lists.isEmpty(chunkList)}">
+    <button><a th:href="@{/session/add}">Finish and Submit Session!</a></button>
+</div>
 
 <p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
 
