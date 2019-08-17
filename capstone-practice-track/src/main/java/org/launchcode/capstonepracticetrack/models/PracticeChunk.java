@@ -6,9 +6,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
-public class PracticeChunk {
+public class PracticeChunk implements Serializable {
 
     @Id
     @GeneratedValue

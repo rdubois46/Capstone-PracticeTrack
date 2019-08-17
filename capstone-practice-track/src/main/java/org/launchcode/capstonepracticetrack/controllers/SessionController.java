@@ -14,8 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -52,13 +54,20 @@ public class SessionController {
 
     // when user makes selections for how to enter their practice data, direct to this controller
     @RequestMapping(value = "data-entry/{id}", method = RequestMethod.POST)
-    public String processUserDataEntryChoices(Model model, @PathVariable int id, @RequestParam String skillChoice, @RequestParam String timeChoice) {
+    public String processUserDataEntryChoices(Model model, @PathVariable int id, @RequestParam String skillChoice, @RequestParam String timeChoice, HttpSession session) {
 
         Instrument currentInstrument = instrumentDao.findOne(id);
         int userId = currentInstrument.getUser().getId();
         Iterable<Skill> givenSkills = currentInstrument.getSkills();
 
-        ArrayList<PracticeChunk> chunkList = new ArrayList<PracticeChunk>();
+        int testId = (int) session.getAttribute("user");
+
+        // create "running" practice chunk list to be stored in HttpSession until user decides to finalize/save practice session
+        ArrayList<PracticeChunk> chunkList = new ArrayList<>();
+        session.setAttribute("chunkList", chunkList);
+        // .getAttribute returns type "Obj"; here we have to cast it to the desired type "ArrayList<PracticeChunk>"
+        chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
+
 
         model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
         model.addAttribute("instrument", currentInstrument);
@@ -77,7 +86,7 @@ public class SessionController {
 
     // Case 1: User selected manual skill entry and manual time entry
     @RequestMapping(value = "data-entry-validation/manual-manual/{id}", method = RequestMethod.POST)
-    public String validatePracticeDataCase1(Model model, @PathVariable int id, @RequestParam String enteredSkill, @RequestParam String enteredTime, @RequestParam ArrayList<PracticeChunk> chunkList) {
+    public String validatePracticeDataCase1(Model model, @PathVariable int id, @RequestParam String enteredSkill, @RequestParam String enteredTime, HttpSession session) {
 
         Instrument currentInstrument = instrumentDao.findOne(id);
         int userId = currentInstrument.getUser().getId();
@@ -91,11 +100,11 @@ public class SessionController {
             model.addAttribute("skillChoice", "manual");
             model.addAttribute("timeChoice", "manual");
             model.addAttribute("skillError", "The skill must be 1-25 characters in length.");
-            model.addAttribute("chunkList", chunkList);
 
             return "session/data-entry";
         } else {
 
+            // PracticeChunk class will require the time to be converted to "int"
             int enteredTimeInt = Integer.parseInt(enteredTime);
 
 
@@ -109,8 +118,17 @@ public class SessionController {
             newChunk.setSkill(newSkill);
             newChunk.setTimeInMinutes(enteredTimeInt);
 
-            // Running list to track added Chunks before user elects to finalize/save Session
+            // Pull running chunkList from session, add the new chunk, put updated list back in session
+            ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
             chunkList.add(newChunk);
+            session.setAttribute("chunkList", chunkList);
+            /*chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
+            Iterable<PracticeChunk> chunkIterable = chunkList;
+
+            for (PracticeChunk chunk : chunkList) {
+                System.out.println(chunk.getSkill() + " " + chunk.getTimeInMinutes());
+            }*/
+
 
 
             model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());

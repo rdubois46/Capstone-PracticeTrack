@@ -23,8 +23,9 @@ public class ProfileController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String viewProfilePage(Model model, HttpSession session, @PathVariable int id) {
 
-        User currentUser = userDao.findOne(id);
-        Object testId = session.getAttribute("user");
+        int testId = (int) session.getAttribute("user");
+
+        User currentUser = userDao.findOne(testId);
 
         Iterable<Instrument> instruments = currentUser.getInstruments();
 

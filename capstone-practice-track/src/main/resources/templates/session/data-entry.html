@@ -20,9 +20,6 @@
             <span class="error" text="${timeError}"></span>
         </div>
 
-        <h2 th:text="${chunkList}"></h2>
-
-        <input type="hidden" name="chunkList" th:value="${chunkList}" />
         <input type="submit" value="Save It!" />
     </form>
 </div>
@@ -54,7 +51,7 @@
 </div>
 
 <div th:if="${#lists.isEmpty(chunkList)}">
-    <h4>-- Nothing in Session yet --</h4>
+    <h4>-- Nothing in Practice Session yet --</h4>
 </div>
 
 <div th:if="${not #lists.isEmpty(chunkList)}">
@@ -76,7 +73,7 @@
 
 
 
-<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/welcome/login}">Log Out</a></p>
+<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
 
 
 </body>
