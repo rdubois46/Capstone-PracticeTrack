@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -22,14 +23,19 @@ public class WelcomeController {
     private UserDao userDao;
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String viewLogin(Model model) {
+    public String viewLogin(Model model, HttpSession session) {
         model.addAttribute("title", "Welcome to PracticeTrack!");
+
+        if (session.getAttribute("user") == null) {
+            model.addAttribute("nullMsg", "No user in session");
+
+        }
 
         return "welcome/index";
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String processLogin(Model model, @RequestParam String username, @RequestParam String password) {
+    public String processLogin(Model model, HttpSession session, @RequestParam String username, @RequestParam String password) {
         List<User> userList = userDao.findByUsername(username);
 
         if (userList.isEmpty()) {
@@ -49,6 +55,9 @@ public class WelcomeController {
 
         model.addAttribute("title", "Login Success! Welcome, " + username + "!");
 
+        // put user in session
+        session.setAttribute("user", currentUser.getId());
+
         return "redirect:/profile/" + currentUser.getId();
 
     }
@@ -63,7 +72,7 @@ public class WelcomeController {
     }
 
     @RequestMapping(value="newAccount", method = RequestMethod.POST)
-    public String processNewAccountForm(Model model, @ModelAttribute @Valid User user, Errors errors, String verify) {
+    public String processNewAccountForm(Model model, @ModelAttribute @Valid User user, HttpSession session, Errors errors, String verify) {
 
         if (verify.isEmpty()) {
             model.addAttribute("error", "Must verify password!");
@@ -90,6 +99,10 @@ public class WelcomeController {
             model.addAttribute("title", "Registration Success! Welcome, " + user.getUsername() + "!");
 
             userDao.save(user);
+
+            // put user in session
+            session.setAttribute("user", user.getId());
+
             return "redirect:/profile/" + user.getId();
         }
     }
