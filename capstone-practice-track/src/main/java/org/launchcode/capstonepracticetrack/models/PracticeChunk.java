@@ -1,11 +1,9 @@
 package org.launchcode.capstonepracticetrack.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -15,15 +13,15 @@ public class PracticeChunk implements Serializable {
     @GeneratedValue
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Session session;
 
     @ManyToOne
-    @NotNull
     private Skill skill;
 
-    @NotNull
-    @Size(min=1, message = "Time cannot be less than 1 minute.")
+    @NotNull(message = "Can't be empty.")
+    @Min(value = 1, message = "Time must be at least 1 minute.")
+    @Max(value = 1000, message = "Time must be less than 1000 minutes. You're not a robot.")
     private int timeInMinutes;
 
     public PracticeChunk() {

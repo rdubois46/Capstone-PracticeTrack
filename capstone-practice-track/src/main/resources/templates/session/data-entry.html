@@ -31,13 +31,13 @@
             <select id="skill-case-2" name="skillId">
                 <option th:each="skill : ${skills}"
                         th:text="${skill.name}"
-                        th:value="${skill}"></option>
+                        th:value="${skill.id}"></option>
             </select>
         </div>
         <div class="form-group">
             <label for="time-case-2">Time: </label>
             <input th:field="*{timeInMinutes}" id="time-case-2" type="number" min="1" step="1"/>
-            <span class="error" th:text="${skillError}"></span>
+            <span th:errors="*{timeInMinutes}" class="error"></span>
         </div>
 
         <input type="submit" value="Save It!" />
@@ -72,7 +72,9 @@
 </div>
 
 <div th:if="${not #lists.isEmpty(chunkList)}">
-    <button><a th:href="@{/session/add}">Finish and Submit Session!</a></button>
+    <form th:action="@{'/session/save/' + ${instrument.id}}" method="post">
+        <input type="submit" value="Finish and Submit Session!" />
+    </form>
 </div>
 
 <p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
