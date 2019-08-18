@@ -4,6 +4,7 @@
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
 <h1 th:text="${title}">Default Title</h1>
+<h4 th:text="'Logged with ID: ' + ${testId}"></h4>
 
 
 <div th:if="${instruments != null and !instruments.empty}">
@@ -23,7 +24,7 @@
 </div>
 
 <p><a th:href="@{'/instrument/add/' + ${userId}}">Add an Instrument!</a></p>
-<p><a th:href="@{/welcome/login}">Log Out</a></p>
+<p><a th:href="@{/profile/logout}">Log Out</a></p>
 
 
 

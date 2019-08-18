@@ -20,7 +20,7 @@ public class Session {
     @ManyToOne
     private Instrument instrument;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "session_id")
     private List<PracticeChunk> practiceChunks = new ArrayList<>();
 

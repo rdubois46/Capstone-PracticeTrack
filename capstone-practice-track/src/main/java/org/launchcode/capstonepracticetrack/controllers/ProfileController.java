@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -20,9 +21,11 @@ public class ProfileController {
     private UserDao userDao;
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public String viewProfilePage(Model model, @PathVariable int id) {
+    public String viewProfilePage(Model model, HttpSession session, @PathVariable int id) {
 
-        User currentUser = userDao.findOne(id);
+        int testId = (int) session.getAttribute("user");
+
+        User currentUser = userDao.findOne(testId);
 
         Iterable<Instrument> instruments = currentUser.getInstruments();
 
@@ -30,7 +33,14 @@ public class ProfileController {
         model.addAttribute("title", "Welcome, " + currentUser.getUsername() + "!");
         model.addAttribute("userId", id);
         model.addAttribute("instruments", instruments);
+        model.addAttribute("testId", testId);
 
         return "profile/index";
+    }
+
+    @RequestMapping(value = "logout")
+    public String logOut(HttpSession session) {
+        session.invalidate();
+        return "redirect:/welcome/login";
     }
 }

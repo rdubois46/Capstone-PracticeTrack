@@ -3,11 +3,12 @@ package org.launchcode.capstonepracticetrack.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Skill {
+public class Skill implements Serializable {
 
     @Id
     @GeneratedValue

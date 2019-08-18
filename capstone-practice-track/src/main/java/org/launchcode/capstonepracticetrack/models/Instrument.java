@@ -4,11 +4,12 @@ import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Instrument {
+public class Instrument implements Serializable {
 
     @Id
     @GeneratedValue
