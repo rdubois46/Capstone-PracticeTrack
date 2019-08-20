@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<h2 th:replace="fragments :: appName"></h2>
+<h1 th:text="${title}">Default Title</h1>
+
+
+<div th:if="${sessionCount}">
+    <form method = "post">
+
+       <div class="form-group">
+           I want to view my most
+           <input type="number" step="1" min="1" th:max="${sessionCount}">
+           recent sessions.
+       </div>
+
+        <input type="submit" value="Let's see it!">
+    </form>
+</div>
+
+
+
+<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+
+
+</body>
+</html>

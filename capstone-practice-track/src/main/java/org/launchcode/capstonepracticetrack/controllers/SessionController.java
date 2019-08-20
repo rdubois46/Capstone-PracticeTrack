@@ -183,15 +183,13 @@ public class SessionController {
             return "session/data-entry";
 
         }
-            // PracticeChunk class will require the time to be converted to "int"
-            /*int enteredTimeInt = Integer.parseInt(enteredTime);*/
 
 
-            // Chunk created but not yet assigned to Session; session not created until user finalizes/saves Session
+        // Chunk created but not yet assigned to Session; session not created until user finalizes/saves Session
         Skill selectedSkill = skillDao.findOne(skillId);
         newChunk.setSkill(selectedSkill);
 
-            // Pull running chunkList from session, add the new chunk, put updated list back in session
+        // Pull running chunkList from session, add the new chunk, put updated list back in session
         ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
         chunkList.add(newChunk);
         session.setAttribute("chunkList", chunkList);
