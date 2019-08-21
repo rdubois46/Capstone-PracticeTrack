@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,20 @@ public class Session implements Serializable {
 
     public Session () {
 
+    }
+
+    // returns list of Skill objects practiced in this Session
+
+    public ArrayList<Skill> getSkillsPracticed () {
+        ArrayList<Skill> skillList = new ArrayList<>();
+
+        for (PracticeChunk chunk : this.getPracticeChunks()) {
+            Skill givenSkill = chunk.getSkill();
+            if ( !Arrays.asList(skillList).contains(givenSkill)) {
+                skillList.add(givenSkill);
+            }
+        }
+        return skillList;
     }
 
     public int getId() {
