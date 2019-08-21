@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<h2 th:replace="fragments :: appName"></h2>
+<h1 th:text="${title}">Default Title</h1>
+
+
+<div th:if="${not #lists.isEmpty(currentSessions)}">
+    <form th:action="@{'/records/view/' + ${instrumentId}}" method = "post">
+        <p th:text="'You have ' + ${#lists.size(currentSessions)} + ' practice sessions recorded.'"></p>
+
+       <div class="form-group">
+           I want to view my most
+           <input type="number" name="numberOfRecords" step="1" min="1" th:max="${#lists.size(currentSessions)}" />
+           recent sessions.
+       </div>
+
+        <input type="submit" value="Let's see it!" />
+    </form>
+</div>
+
+<div th:if="${#lists.isEmpty(currentSessions)}">
+    <h3>No practice sessions yet recorded for this instrument!</h3>
+</div>
+
+
+
+<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+
+
+</body>
+</html>
