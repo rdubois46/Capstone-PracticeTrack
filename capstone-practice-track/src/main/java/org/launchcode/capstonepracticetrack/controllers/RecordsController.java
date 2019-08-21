@@ -30,15 +30,15 @@ public class RecordsController {
     SessionDao sessionDao;
 
 
-    @RequestMapping(value="{id}")
-    public String recordsView(Model model, @PathVariable int id, HttpSession httpSession) {
+    @RequestMapping(value="{InstrumentId}")
+    public String recordsSelect(Model model, @PathVariable int InstrumentId, HttpSession httpSession) {
 
-        Instrument currentInstrument = instrumentDao.findOne(id);
+        Instrument currentInstrument = instrumentDao.findOne(InstrumentId);
         User currentUser = currentInstrument.getUser();
         int userId = currentUser.getId();
 
-        List<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
-        List<Session> currentSessions = sessionDao.findByUser_id(userId);
+        Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
+        Iterable<Session> currentSessions =  sessionDao.findByInstrument_id(InstrumentId);
 
         httpSession.setAttribute("currentSessions", currentSessions);
         httpSession.setAttribute("currentUser", currentUser);
@@ -48,6 +48,7 @@ public class RecordsController {
 
         model.addAttribute("title", "Select number of sessions to view for " + currentInstrument.getName() + ": ");
         model.addAttribute("userId", userId);
+        model.addAttribute("currentSessions", currentSessions);
 
         return "records/view-session-records";
     }

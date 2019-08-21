@@ -13,4 +13,6 @@ public interface SessionDao extends CrudRepository<Session, Integer> {
 
     public List<Session> findByUser_id(int id);
 
+    public List<Session> findByInstrument_id(int id);
+
 }

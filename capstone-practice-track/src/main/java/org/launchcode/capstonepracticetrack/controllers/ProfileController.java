@@ -23,9 +23,8 @@ public class ProfileController {
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String viewProfilePage(Model model, HttpSession session, @PathVariable int id) {
 
-        int testId = (int) session.getAttribute("user");
 
-        User currentUser = userDao.findOne(testId);
+        User currentUser = userDao.findOne(id);
 
         Iterable<Instrument> instruments = currentUser.getInstruments();
 
@@ -33,7 +32,6 @@ public class ProfileController {
         model.addAttribute("title", "Welcome, " + currentUser.getUsername() + "!");
         model.addAttribute("userId", id);
         model.addAttribute("instruments", instruments);
-        model.addAttribute("testId", testId);
 
         return "profile/index";
     }

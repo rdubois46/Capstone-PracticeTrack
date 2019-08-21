@@ -1,12 +1,13 @@
 package org.launchcode.capstonepracticetrack.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Session {
+public class Session implements Serializable {
 
     @Id
     @GeneratedValue
