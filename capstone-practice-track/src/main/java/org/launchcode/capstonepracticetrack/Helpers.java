@@ -3,13 +3,23 @@ package org.launchcode.capstonepracticetrack;
 import org.launchcode.capstonepracticetrack.models.PracticeChunk;
 import org.launchcode.capstonepracticetrack.models.Session;
 import org.launchcode.capstonepracticetrack.models.Skill;
+import org.launchcode.capstonepracticetrack.models.data.SessionDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Helpers {
+
+    @Autowired
+    private SessionDao sessionDao;
 
     // returns list of unique Skill objects practiced in this Session
     public static ArrayList<Skill> getSkillsPracticed (Session givenSession) {
@@ -71,31 +81,20 @@ public class Helpers {
         return allSkillIdsList;
     }
 
+    public ArrayList<Session> getSortedSelectedSessions(Integer numberSessionsToGet, Pageable pageable) {
+
+        /*Page<Passenger> page = repository.findAll(PageRequest.of(0, 1, Sort.by(Sort.Direction.ASC, "seatNumber")));*/
+
+        /*Page<Session> page = sessionDao.findAll(PageRequest.of(0, numberSessionsToGet, Sort.by(Sort.Direction.DESC, "id")));*/
+
+
+        return null;
+    }
+
 
 
 }
 
-    /*public static HashMap<Integer, Integer> getSessionAndTimeMap(Skill skill, Iterable<Session> givenSessions) {
-        HashMap<Integer, Integer> sessionAndTimeMap = new HashMap<>();
-        int skillId = skill.getId();
 
-        int sessionCounter = 0;
-        int totalTime = 0;
-
-        // for each session in our selection of sessions
-        for (Session session : givenSessions) {
-            // for each practice chunk in a single session
-            for (PracticeChunk chunk : session.getPracticeChunks()) {
-                // if that chunk contains the skill we want to chart, add the session Id and time to map
-                if (chunk.getSkill().getId() == skillId ) {
-                    sessionAndTimeMap.put(session.getId(), chunk.get)
-
-                }
-            }
-
-        }
-
-        return sessionAndTimeMap;
-    }*/
 
 

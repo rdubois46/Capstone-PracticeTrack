@@ -1,5 +1,8 @@
 package org.launchcode.capstonepracticetrack.models;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -8,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-public class Session implements Serializable {
+public class Session implements Serializable, Comparable<Session>, Pageable {
 
     @Id
     @GeneratedValue
@@ -98,5 +101,54 @@ public class Session implements Serializable {
 
     public void setPracticeChunks(List<PracticeChunk> practiceChunks) {
         this.practiceChunks = practiceChunks;
+    }
+
+    @Override
+    public int compareTo(Session o) {
+
+        Integer thisId = (Integer) this.getId();
+        Integer oId = (Integer) o.getId();
+
+        return thisId.compareTo(oId);
+    }
+
+    @Override
+    public int getPageNumber() {
+        return 0;
+    }
+
+    @Override
+    public int getPageSize() {
+        return 0;
+    }
+
+    @Override
+    public int getOffset() {
+        return 0;
+    }
+
+    @Override
+    public Sort getSort() {
+        return null;
+    }
+
+    @Override
+    public Pageable next() {
+        return null;
+    }
+
+    @Override
+    public Pageable previousOrFirst() {
+        return null;
+    }
+
+    @Override
+    public Pageable first() {
+        return null;
+    }
+
+    @Override
+    public boolean hasPrevious() {
+        return false;
     }
 }

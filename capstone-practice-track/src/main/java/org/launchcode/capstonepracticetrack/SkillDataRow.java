@@ -3,6 +3,7 @@ package org.launchcode.capstonepracticetrack;
 import org.launchcode.capstonepracticetrack.models.Session;
 import org.launchcode.capstonepracticetrack.models.Skill;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +32,7 @@ public class SkillDataRow {
     public SkillDataRow(Skill skill) {
         this.skill = skill;
         this.total = 0;
-        for (HashMap<Session, Integer> chunk : skillChunks) {
-            for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
-                this.total = this.total + entry.getValue();
-            }
-        }
+        this.average = 0;
     }
 
     public SkillDataRow(Skill skill, ArrayList<HashMap<Session, Integer>> skillChunks) {
@@ -47,6 +44,8 @@ public class SkillDataRow {
                 this.total = this.total + entry.getValue();
             }
         }
+
+        this.average = this.total / this.skillChunks.size();
     }
 
     //methods
@@ -56,10 +55,25 @@ public class SkillDataRow {
             this.total = this.total + entry.getValue();
         }
 
+        this.average = this.total / this.skillChunks.size();
+    }
+
+    // returns arraylist of practice chunk times (separated from their corresponding session
+    // IDs). This allows for easier iteration when displaying these times in the view
+    public ArrayList<Integer> getTimesList(ArrayList<HashMap<Session, Integer>> skillChunks) {
+        ArrayList<Integer> timesList = new ArrayList<>();
+
+        for (HashMap<Session, Integer> chunk : skillChunks) {
+            for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
+                timesList.add(entry.getValue());
+            }
+        }
+
+        return timesList;
     }
 
 
-
+    //getters & setters
     public Skill getSkill() {
         return skill;
     }
@@ -74,6 +88,14 @@ public class SkillDataRow {
 
     public void setSkillChunks(ArrayList<HashMap<Session, Integer>> skillChunks) {
         this.skillChunks = skillChunks;
+
+        for (HashMap<Session, Integer> chunk : skillChunks) {
+            for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
+                this.total = this.total + entry.getValue();
+            }
+        }
+
+        this.average = this.total / this.skillChunks.size();
     }
 
     public int getTotal() {

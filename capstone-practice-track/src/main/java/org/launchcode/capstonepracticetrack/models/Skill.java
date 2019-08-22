@@ -34,14 +34,18 @@ public class Skill implements Serializable {
         this.active = true;
     }
 
+    public Skill() {
+
+    }
+
     @Override
     public boolean equals(Object object) {
         if (object == null || object.getClass() != getClass()) {
             return false;
         }
         {
-            object = (Skill) object;
-            if (object == this || this.id == ((Skill) object).getId()) {
+            Skill skillObject = (Skill) object;
+            if (skillObject == this || this.id == skillObject.getId()) {
                 return true;
             }
         }
