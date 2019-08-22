@@ -50,6 +50,20 @@ public class Session implements Serializable {
         return skillList;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || object.getClass() != getClass()) {
+            return false;
+        }
+        {
+            object = (Skill) object;
+            if (object == this || this.id == ((Skill) object).getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int getId() {
         return id;
     }

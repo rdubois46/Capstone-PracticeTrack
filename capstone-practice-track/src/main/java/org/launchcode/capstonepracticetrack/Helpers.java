@@ -12,7 +12,6 @@ import java.util.HashMap;
 public class Helpers {
 
     // returns list of unique Skill objects practiced in this Session
-
     public static ArrayList<Skill> getSkillsPracticed (Session givenSession) {
         ArrayList<Skill> skillList = new ArrayList<>();
 
@@ -25,8 +24,24 @@ public class Helpers {
         return skillList;
     }
 
-    // returns list of unique skill ids practiced during this Session
+    // returns list of all unique Skill objects practiced across a selected group of Sessions
+    public static ArrayList<Skill> getAllSkillsPracticed(ArrayList<Session> selectedSessions) {
+        ArrayList<Skill> allSkillsList = new ArrayList<>();
 
+        for (Session givenSession : selectedSessions) {
+            ArrayList<Skill> skillIdList = Helpers.getSkillsPracticed(givenSession);
+            for (Skill givenSkill : skillIdList) {
+                if (!allSkillsList.contains(givenSkill)) {
+                    allSkillsList.add(givenSkill);
+                }
+
+            }
+        }
+
+        return allSkillsList;
+    }
+
+    // returns list of unique skill ids practiced during this Session
     public static ArrayList<Integer> getSkillIds(Session givenSession) {
         ArrayList<Integer> skillIdList = new ArrayList<>();
         ArrayList<Skill> skillList = Helpers.getSkillsPracticed(givenSession);
@@ -40,7 +55,7 @@ public class Helpers {
     }
 
     // returns list of all unique skill ids practiced across a selected group of Sessions
-    public static ArrayList<Integer> getAllSkillsPracticed(ArrayList<Session> selectedSessions) {
+    public static ArrayList<Integer> getAllSkillsIdsPracticed(ArrayList<Session> selectedSessions) {
         ArrayList<Integer> allSkillIdsList = new ArrayList<>();
 
         for (Session givenSession : selectedSessions) {
@@ -54,8 +69,11 @@ public class Helpers {
         }
 
         return allSkillIdsList;
-
     }
+
+
+
+}
 
     /*public static HashMap<Integer, Integer> getSessionAndTimeMap(Skill skill, Iterable<Session> givenSessions) {
         HashMap<Integer, Integer> sessionAndTimeMap = new HashMap<>();
@@ -81,5 +99,3 @@ public class Helpers {
     }*/
 
 
-
-}
