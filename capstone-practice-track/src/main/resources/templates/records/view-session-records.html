@@ -17,13 +17,18 @@
             <th th:each="session : ${selectedSessions}" th:text="'Session ' + ${session.id}">
 
             </th>
+            <th>Total</th>
+            <th>Average</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-
+        <tr th:each="row : ${selectedSkillDataRows}">
+            <td th:text="${row.skill.name}"></td>
+            <td th:each="time : ${row.getTimesList()}"
+                th:text="${time}"></td>
+            <td th:text="${row.total}"></td>
+            <td th:text="${row.average}"></td>
         </tr>
-
     </tbody>
 </table>
 

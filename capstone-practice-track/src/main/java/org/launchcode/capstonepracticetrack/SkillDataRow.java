@@ -12,40 +12,31 @@ public class SkillDataRow {
 
     private Skill skill;
 
-    private ArrayList<HashMap<Session, Integer>> skillChunks;
+    private ArrayList<HashMap<Session, Integer>> skillChunks = new ArrayList<>();
 
-    private int total;
+    private int total = 0;
 
-    private int average;
+    private double average = 0;
 
     // constructors
     public SkillDataRow() {
-        this.total = 0;
-        for (HashMap<Session, Integer> chunk : skillChunks) {
-            for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
-                this.total = this.total + entry.getValue();
-            }
-        }
 
     }
 
     public SkillDataRow(Skill skill) {
         this.skill = skill;
-        this.total = 0;
-        this.average = 0;
     }
 
     public SkillDataRow(Skill skill, ArrayList<HashMap<Session, Integer>> skillChunks) {
         this.skill = skill;
         this.skillChunks = skillChunks;
-        this.total = 0;
         for (HashMap<Session, Integer> chunk : skillChunks) {
             for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
                 this.total = this.total + entry.getValue();
             }
         }
 
-        this.average = this.total / this.skillChunks.size();
+        this.average = Helpers.round(this.total / this.skillChunks.size(), 2);
     }
 
     //methods
@@ -55,15 +46,15 @@ public class SkillDataRow {
             this.total = this.total + entry.getValue();
         }
 
-        this.average = this.total / this.skillChunks.size();
+        this.average = Helpers.round(this.total / this.skillChunks.size(), 2);
     }
 
-    // returns arraylist of practice chunk times (separated from their corresponding session
-    // IDs). This allows for easier iteration when displaying these times in the view
-    public ArrayList<Integer> getTimesList(ArrayList<HashMap<Session, Integer>> skillChunks) {
+    // returns list of Integers - practice chunk times - separated from their corresponding Sessions.
+    // This prevents having to iterate over HashMaps when displaying these times in the view.
+    public ArrayList<Integer> getTimesList() {
         ArrayList<Integer> timesList = new ArrayList<>();
 
-        for (HashMap<Session, Integer> chunk : skillChunks) {
+        for (HashMap<Session, Integer> chunk : this.skillChunks) {
             for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
                 timesList.add(entry.getValue());
             }
@@ -95,7 +86,7 @@ public class SkillDataRow {
             }
         }
 
-        this.average = this.total / this.skillChunks.size();
+        this.average = Helpers.round(this.total / this.skillChunks.size(), 2);
     }
 
     public int getTotal() {
@@ -106,7 +97,7 @@ public class SkillDataRow {
         this.total = total;
     }
 
-    public int getAverage() {
+    public double getAverage() {
         return average;
     }
 
