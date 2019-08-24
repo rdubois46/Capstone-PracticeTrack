@@ -11,10 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Helpers {
 
@@ -81,14 +78,20 @@ public class Helpers {
         return allSkillIdsList;
     }
 
-    public ArrayList<Session> getSortedSelectedSessions(Integer numberSessionsToGet, Pageable pageable) {
+    // used to get specified number of sessions from existing list of sessions
+    public static List<Session> limitSessionsBy(List<Session> givenSessions, int count) {
+        if (givenSessions.isEmpty()) {
+            return null;
+        }
 
-        /*Page<Passenger> page = repository.findAll(PageRequest.of(0, 1, Sort.by(Sort.Direction.ASC, "seatNumber")));*/
+        List<Session> selectedSessions = new ArrayList<Session>();
 
-        /*Page<Session> page = sessionDao.findAll(PageRequest.of(0, numberSessionsToGet, Sort.by(Sort.Direction.DESC, "id")));*/
+        for (int i = 0; i < count; i++) {
+            selectedSessions.add(givenSessions.get(i));
 
-
-        return null;
+        }
+        Collections.reverse(selectedSessions);
+        return selectedSessions;
     }
 
 

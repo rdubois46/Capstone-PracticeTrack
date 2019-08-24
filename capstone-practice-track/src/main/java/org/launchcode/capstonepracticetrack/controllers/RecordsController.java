@@ -1,7 +1,7 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
+import org.launchcode.capstonepracticetrack.Helpers;
 import org.launchcode.capstonepracticetrack.models.Instrument;
-import org.launchcode.capstonepracticetrack.models.PracticeChunk;
 import org.launchcode.capstonepracticetrack.models.Session;
 import org.launchcode.capstonepracticetrack.models.User;
 import org.launchcode.capstonepracticetrack.models.data.InstrumentDao;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -64,11 +63,18 @@ public class RecordsController {
         int userId = currentUser.getId();
 
         Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
-        Iterable<Session> currentSessions =  sessionDao.findByInstrument_id(InstrumentId);
+
+        // sorts Sessions for selected instrument by highest ID, which will list most recent Sessions first
+        List<Session> currentSessions = sessionDao.findByInstrument_idOrderByIdDesc(currentInstrument.getId());
+
+        // selects specified number of most recent Sessions
+        Iterable <Session> selectedSessions = Helpers.limitSessionsBy(currentSessions, numberOfRecords);
 
         model.addAttribute("title", "Practice Table for " + currentInstrument.getName() + ": ");
         model.addAttribute("userId", userId);
-        model.addAttribute("currentSessions", currentSessions);
+        model.addAttribute("selectedSessions", selectedSessions);
+
+
 
         return "records/view-session-records";
 
