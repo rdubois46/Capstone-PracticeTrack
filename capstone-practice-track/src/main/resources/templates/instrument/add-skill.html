@@ -22,6 +22,7 @@
         <label th:for="skill">Skill name: </label>
         <input class="form-control" id="skill" type="text" th:field="*{name}" th:value="*{name}" />
         <span class="error" th:errors="*{name}"></span>
+        <p class="error" th:text="${alreadyExistsError}"></p>
     </div>
     <input type="submit" value="Add Skill" />
 </form>

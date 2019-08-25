@@ -4,14 +4,12 @@ import org.launchcode.capstonepracticetrack.models.PracticeChunk;
 import org.launchcode.capstonepracticetrack.models.PracticeSession;
 import org.launchcode.capstonepracticetrack.models.Skill;
 import org.launchcode.capstonepracticetrack.models.data.PracticeSessionDao;
+import org.launchcode.capstonepracticetrack.models.data.SkillDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 public class Helpers {
-
-    @Autowired
-    private PracticeSessionDao practiceSessionDao;
 
     // returns list of unique Skill objects practiced in this Session
     public static List<Skill> getSkillsPracticed (PracticeSession givenPracticeSession) {
@@ -132,6 +130,14 @@ public class Helpers {
     }
 
 
+    public static boolean doesSkillAlreadyExist(int instrumentId, String skillName, SkillDao skillDao) {
+        String lowercaseSkillName = skillName.toLowerCase();
+        List<Skill> skillContainer = skillDao.findByInstrument_idAndName(instrumentId, lowercaseSkillName);
+        if (skillContainer == null || skillContainer.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 
 }
 
