@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-public class Session implements Serializable, Comparable<Session>, Pageable {
+public class PracticeSession implements Serializable, Comparable<PracticeSession>, Pageable {
 
     @Id
     @GeneratedValue
@@ -26,16 +26,16 @@ public class Session implements Serializable, Comparable<Session>, Pageable {
     private Instrument instrument;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "session_id")
+    @JoinColumn(name = "practice_session_id")
     private List<PracticeChunk> practiceChunks = new ArrayList<>();
 
-    public Session (LocalDate date, User user, Instrument instrument) {
+    public PracticeSession(LocalDate date, User user, Instrument instrument) {
         this.date = date;
         this.user = user;
         this.instrument = instrument;
     }
 
-    public Session () {
+    public PracticeSession() {
 
     }
 
@@ -104,7 +104,7 @@ public class Session implements Serializable, Comparable<Session>, Pageable {
     }
 
     @Override
-    public int compareTo(Session o) {
+    public int compareTo(PracticeSession o) {
 
         Integer thisId = (Integer) this.getId();
         Integer oId = (Integer) o.getId();

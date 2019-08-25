@@ -1,9 +1,8 @@
 package org.launchcode.capstonepracticetrack;
 
-import org.launchcode.capstonepracticetrack.models.Session;
+import org.launchcode.capstonepracticetrack.models.PracticeSession;
 import org.launchcode.capstonepracticetrack.models.Skill;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ public class SkillDataRow {
 
     private Skill skill;
 
-    private ArrayList<HashMap<Session, Integer>> skillChunks = new ArrayList<>();
+    private ArrayList<HashMap<PracticeSession, Integer>> skillChunks = new ArrayList<>();
 
     private int total = 0;
 
@@ -27,11 +26,11 @@ public class SkillDataRow {
         this.skill = skill;
     }
 
-    public SkillDataRow(Skill skill, ArrayList<HashMap<Session, Integer>> skillChunks) {
+    public SkillDataRow(Skill skill, ArrayList<HashMap<PracticeSession, Integer>> skillChunks) {
         this.skill = skill;
         this.skillChunks = skillChunks;
-        for (HashMap<Session, Integer> chunk : skillChunks) {
-            for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
+        for (HashMap<PracticeSession, Integer> chunk : skillChunks) {
+            for (Map.Entry<PracticeSession, Integer> entry : chunk.entrySet()) {
                 this.total = this.total + entry.getValue();
             }
         }
@@ -40,9 +39,9 @@ public class SkillDataRow {
     }
 
     //methods
-    public void addChunk(HashMap<Session, Integer> chunk) {
+    public void addChunk(HashMap<PracticeSession, Integer> chunk) {
         this.skillChunks.add(chunk);
-        for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
+        for (Map.Entry<PracticeSession, Integer> entry : chunk.entrySet()) {
             this.total = this.total + entry.getValue();
         }
 
@@ -54,8 +53,8 @@ public class SkillDataRow {
     public ArrayList<Integer> getTimesList() {
         ArrayList<Integer> timesList = new ArrayList<>();
 
-        for (HashMap<Session, Integer> chunk : this.skillChunks) {
-            for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
+        for (HashMap<PracticeSession, Integer> chunk : this.skillChunks) {
+            for (Map.Entry<PracticeSession, Integer> entry : chunk.entrySet()) {
                 timesList.add(entry.getValue());
             }
         }
@@ -73,15 +72,15 @@ public class SkillDataRow {
         this.skill = skill;
     }
 
-    public ArrayList<HashMap<Session, Integer>> getSkillChunks() {
+    public ArrayList<HashMap<PracticeSession, Integer>> getSkillChunks() {
         return skillChunks;
     }
 
-    public void setSkillChunks(ArrayList<HashMap<Session, Integer>> skillChunks) {
+    public void setSkillChunks(ArrayList<HashMap<PracticeSession, Integer>> skillChunks) {
         this.skillChunks = skillChunks;
 
-        for (HashMap<Session, Integer> chunk : skillChunks) {
-            for (Map.Entry<Session, Integer> entry : chunk.entrySet()) {
+        for (HashMap<PracticeSession, Integer> chunk : skillChunks) {
+            for (Map.Entry<PracticeSession, Integer> entry : chunk.entrySet()) {
                 this.total = this.total + entry.getValue();
             }
         }

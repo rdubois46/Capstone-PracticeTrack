@@ -6,7 +6,9 @@
 <h1 th:text="${title}">Default Title</h1>
 
 <h3>How will you be entering this practice info?</h3>
-<form th:action="@{'/session/data-entry/' + ${instrument.id}}" method="post">
+<h4 class="error" th:text="${noSkillsError}"></h4>
+
+<form th:action="@{'/practice-session/data-entry/' + ${instrument.id}}" method="post">
     <h4>Skill Choice</h4>
     <div class="form-group">
         <div>

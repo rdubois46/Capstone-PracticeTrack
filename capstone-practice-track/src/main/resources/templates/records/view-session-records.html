@@ -8,13 +8,13 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="table-head">
                 Practice Sessions
             </th>
         </tr>
         <tr>
             <th></th>
-            <th th:each="session : ${selectedSessions}" th:text="'Session ' + ${session.id}">
+            <th th:each="practiceSession : ${selectedPracticeSessions}" th:text="'Session ' + ${practiceSession.id}">
 
             </th>
             <th>Total</th>
@@ -32,6 +32,7 @@
     </tbody>
 </table>
 
+<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
 
 </body>
 </html>

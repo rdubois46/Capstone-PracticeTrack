@@ -1,6 +1,5 @@
 package org.launchcode.capstonepracticetrack.models;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,7 +30,7 @@ public class Instrument implements Serializable {
 
     @OneToMany
     @JoinColumn(name = "instrument_id")
-    private List<Session> sessions = new ArrayList<>();
+    private List<PracticeSession> practiceSessions = new ArrayList<>();
 
     public Instrument(String name, User user) {
         this.name = name;
@@ -83,12 +82,12 @@ public class Instrument implements Serializable {
         this.skills = skills;
     }
 
-    public List<Session> getSessions() {
-        return sessions;
+    public List<PracticeSession> getPracticeSessions() {
+        return practiceSessions;
     }
 
-    public void setSessions(List<Session> sessions) {
-        this.sessions = sessions;
+    public void setPracticeSessions(List<PracticeSession> practiceSessions) {
+        this.practiceSessions = practiceSessions;
     }
 
 }

@@ -8,7 +8,7 @@
 <h3>Enter your practice chunk!</h3>
 
 <div th:if="${skillChoice == 'manual' and timeChoice == 'manual'}">
-    <form th:action="@{'/session/data-entry-validation/manual-manual/' + ${instrument.id}}" method = "post">
+    <form th:action="@{'/practice-session/data-entry-validation/manual-manual/' + ${instrument.id}}" method = "post">
         <div class="form-group">
             <label for="skill-case-1">Skill: </label>
             <input id="skill-case-1" type="text" name="enteredSkill" style="width : 230px;" th:value="${enteredSkill}" />
@@ -25,7 +25,7 @@
 </div>
 
 <div th:if="${skillChoice == 'list' and timeChoice == 'manual'}">
-    <form th:action="@{'/session/data-entry-validation/list-manual/' + ${instrument.id}}" method="post" th:object="${practiceChunk}">
+    <form th:action="@{'/practice-session/data-entry-validation/list-manual/' + ${instrument.id}}" method="post" th:object="${practiceChunk}">
         <div class="form-group">
             <label for="skill-case-2">Skill: </label>
             <select id="skill-case-2" name="skillId">
@@ -72,7 +72,7 @@
 </div>
 
 <div th:if="${not #lists.isEmpty(chunkList)}">
-    <form th:action="@{'/session/save/' + ${instrument.id}}" method="post">
+    <form th:action="@{'/practice-session/save/' + ${instrument.id}}" method="post">
         <input type="submit" value="Finish and Submit Session!" />
     </form>
 </div>

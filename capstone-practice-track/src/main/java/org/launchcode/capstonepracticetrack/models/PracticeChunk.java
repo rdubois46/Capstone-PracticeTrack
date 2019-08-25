@@ -14,7 +14,7 @@ public class PracticeChunk implements Serializable {
     private int id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Session session;
+    private PracticeSession practiceSession;
 
     @ManyToOne
     private Skill skill;
@@ -32,12 +32,12 @@ public class PracticeChunk implements Serializable {
         return id;
     }
 
-    public Session getSession() {
-        return session;
+    public PracticeSession getPracticeSession() {
+        return practiceSession;
     }
 
-    public void setSession(Session session) {
-        this.session = session;
+    public void setPracticeSession(PracticeSession practiceSession) {
+        this.practiceSession = practiceSession;
     }
 
     public Skill getSkill() {

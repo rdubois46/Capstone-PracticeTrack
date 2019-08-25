@@ -35,7 +35,7 @@ public class User implements Serializable {
 
     @OneToMany
     @JoinColumn(name = "user_id")
-    private List<Session> sessions = new ArrayList<>();
+    private List<PracticeSession> practiceSessions = new ArrayList<>();
 
     public User () {
 
@@ -86,12 +86,12 @@ public class User implements Serializable {
         this.instruments = instruments;
     }
 
-    public List<Session> getSessions() {
-        return sessions;
+    public List<PracticeSession> getPracticeSessions() {
+        return practiceSessions;
     }
 
-    public void setSessions(List<Session> sessions) {
-        this.sessions = sessions;
+    public void setPracticeSessions(List<PracticeSession> practiceSessions) {
+        this.practiceSessions = practiceSessions;
     }
 }
 

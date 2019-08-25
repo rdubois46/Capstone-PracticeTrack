@@ -3,11 +3,11 @@ package org.launchcode.capstonepracticetrack.controllers;
 import org.launchcode.capstonepracticetrack.Helpers;
 import org.launchcode.capstonepracticetrack.SkillDataRow;
 import org.launchcode.capstonepracticetrack.models.Instrument;
-import org.launchcode.capstonepracticetrack.models.Session;
+import org.launchcode.capstonepracticetrack.models.PracticeSession;
 import org.launchcode.capstonepracticetrack.models.Skill;
 import org.launchcode.capstonepracticetrack.models.User;
 import org.launchcode.capstonepracticetrack.models.data.InstrumentDao;
-import org.launchcode.capstonepracticetrack.models.data.SessionDao;
+import org.launchcode.capstonepracticetrack.models.data.PracticeSessionDao;
 import org.launchcode.capstonepracticetrack.models.data.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -31,7 +30,7 @@ public class RecordsController {
     UserDao userDao;
 
     @Autowired
-    SessionDao sessionDao;
+    PracticeSessionDao practiceSessionDao;
 
 
     @RequestMapping(value="select/{instrumentId}", method = RequestMethod.GET)
@@ -42,9 +41,9 @@ public class RecordsController {
         int userId = currentUser.getId();
 
         Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
-        Iterable<Session> currentSessions =  sessionDao.findByInstrument_id(instrumentId);
+        Iterable<PracticeSession> currentPracticeSessions =  practiceSessionDao.findByInstrument_id(instrumentId);
 
-        httpSession.setAttribute("currentSessions", currentSessions);
+        httpSession.setAttribute("currentPracticeSessions", currentPracticeSessions);
         httpSession.setAttribute("currentUser", currentUser);
         httpSession.setAttribute("currentInstrument", currentInstrument);
         httpSession.setAttribute("allUserInstruments", allUserInstruments);
@@ -52,7 +51,7 @@ public class RecordsController {
 
         model.addAttribute("title", "Select number of sessions to view for " + currentInstrument.getName() + ": ");
         model.addAttribute("userId", userId);
-        model.addAttribute("currentSessions", currentSessions);
+        model.addAttribute("currentPracticeSessions", currentPracticeSessions);
         model.addAttribute("instrumentId", instrumentId);
 
         return "records/select-session-records";
@@ -67,19 +66,21 @@ public class RecordsController {
 
         Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
 
-        // sorts Sessions for selected instrument by highest ID, which will list most recent Sessions first
-        List<Session> currentSessions = sessionDao.findByInstrument_idOrderByIdDesc(currentInstrument.getId());
+        // sorts PracticeSessions for selected instrument by highest ID, which will list most recent PracticeSessions first
+        List<PracticeSession> currentPracticeSessions = practiceSessionDao.findByInstrument_idOrderByIdDesc(currentInstrument.getId());
 
-        // selects specified number of most recent Sessions
-        List<Session> selectedSessions = Helpers.limitSessionsBy(currentSessions, numberOfRecords);
+        // selects specified number of most recent PracticeSessions
+        List<PracticeSession> selectedPracticeSessions = Helpers.limitPracticeSessionsBy(currentPracticeSessions, numberOfRecords);
 
-        List<Skill> selectedSkills = Helpers.getAllSkillsPracticed(selectedSessions);
+        // makes list of unique (non-recurring) Skill objects across the selected PracticeSessions
+        List<Skill> selectedSkills = Helpers.getAllSkillsPracticed(selectedPracticeSessions);
 
-        List<SkillDataRow> selectedSkillDataRows = Helpers.createSkillDataRows(selectedSessions);
+        // creates the skill rows to be used in the table display
+        List<SkillDataRow> selectedSkillDataRows = Helpers.createSkillDataRows(selectedPracticeSessions);
 
         model.addAttribute("title", "Practice Table for " + currentInstrument.getName() + ": ");
         model.addAttribute("userId", userId);
-        model.addAttribute("selectedSessions", selectedSessions);
+        model.addAttribute("selectedPracticeSessions", selectedPracticeSessions);
         model.addAttribute("selectedSkills", selectedSkills);
         model.addAttribute("selectedSkillDataRows", selectedSkillDataRows);
 
