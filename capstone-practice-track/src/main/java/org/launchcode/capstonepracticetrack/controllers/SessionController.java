@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.nio.channels.SelectionKey;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class SessionController {
 
     // when user clicks "create session" from profile, direct to this controller
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public String createSession(Model model, @PathVariable int id) {
+    public String createPracticeSession(Model model, @PathVariable int id) {
 
         Instrument currentInstrument = instrumentDao.findOne(id);
         Iterable<Skill> givenSkills = currentInstrument.getSkills();
@@ -55,8 +56,9 @@ public class SessionController {
 
     // when user makes selections for how to enter their practice data, direct to this controller
     @RequestMapping(value = "data-entry/{id}", method = RequestMethod.POST)
-    public String processUserDataEntryChoices(Model model, @PathVariable int id, @RequestParam String skillChoice, @RequestParam String timeChoice, HttpSession session) {
+    public String processPracticeSessionDataEntryChoices(Model model, @PathVariable int id, @RequestParam String skillChoice, @RequestParam String timeChoice, @RequestParam String date, HttpSession session) {
 
+        // if user selects to use their skill list, but nothing is in it, returns to previous view with error message
         if (skillChoice.equals("list") && skillDao.findByInstrument_id(id).isEmpty()) {
 
             Instrument currentInstrument = instrumentDao.findOne(id);
@@ -72,15 +74,23 @@ public class SessionController {
             return "practice-session/add-session";
         }
 
+
+
         Instrument currentInstrument = instrumentDao.findOne(id);
         int userId = currentInstrument.getUser().getId();
         Iterable<Skill> givenSkills = currentInstrument.getSkills();
+
+        // put date in http session; will be used later as field in saved PracticeSession
+        LocalDate localDate = LocalDate.parse(date);
+        session.setAttribute("practiceSessionDate", localDate);
+
 
         int testId = (int) session.getAttribute("user");
 
         // create "running" practice chunk list to be stored in HttpSession until user decides to finalize/save practice session
         ArrayList<PracticeChunk> chunkList = new ArrayList<>();
         session.setAttribute("chunkList", chunkList);
+
         // .getAttribute returns type "Obj"; here we have to cast it to the desired type "ArrayList<PracticeChunk>"
         chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
 
@@ -242,12 +252,15 @@ public class SessionController {
 
         PracticeSession newPracticeSession = new PracticeSession();
 
+        LocalDate date = (LocalDate) session.getAttribute("practiceSessionDate");
         Instrument practiceSessionInstrument = instrumentDao.findOne(id);
-        User sessionUser = practiceSessionInstrument.getUser();
+        User practiceSessionUser = practiceSessionInstrument.getUser();
         ArrayList<PracticeChunk> practiceSessionChunks = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
 
+
+        newPracticeSession.setDate(date);
         newPracticeSession.setInstrument(practiceSessionInstrument);
-        newPracticeSession.setUser(sessionUser);
+        newPracticeSession.setUser(practiceSessionUser);
         newPracticeSession.setPracticeChunks(practiceSessionChunks);
 
         practiceSessionDao.save(newPracticeSession);

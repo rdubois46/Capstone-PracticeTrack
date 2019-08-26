@@ -15,10 +15,15 @@
         <tr>
             <th></th>
             <th th:each="practiceSession : ${selectedPracticeSessions}" th:text="'Session ' + ${practiceSession.id}">
-
             </th>
             <th>Total</th>
             <th>Average</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th th:each="practiceSession : ${selectedPracticeSessions}" th:text="${practiceSession.date}"></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>

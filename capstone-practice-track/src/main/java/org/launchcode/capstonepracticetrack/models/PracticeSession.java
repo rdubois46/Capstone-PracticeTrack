@@ -2,6 +2,7 @@ package org.launchcode.capstonepracticetrack.models;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,12 +12,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-public class PracticeSession implements Serializable, Comparable<PracticeSession>, Pageable {
+public class PracticeSession implements Serializable, Comparable<PracticeSession> {
 
     @Id
     @GeneratedValue
     private int id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     @ManyToOne
@@ -112,43 +114,5 @@ public class PracticeSession implements Serializable, Comparable<PracticeSession
         return thisId.compareTo(oId);
     }
 
-    @Override
-    public int getPageNumber() {
-        return 0;
-    }
 
-    @Override
-    public int getPageSize() {
-        return 0;
-    }
-
-    @Override
-    public int getOffset() {
-        return 0;
-    }
-
-    @Override
-    public Sort getSort() {
-        return null;
-    }
-
-    @Override
-    public Pageable next() {
-        return null;
-    }
-
-    @Override
-    public Pageable previousOrFirst() {
-        return null;
-    }
-
-    @Override
-    public Pageable first() {
-        return null;
-    }
-
-    @Override
-    public boolean hasPrevious() {
-        return false;
-    }
 }
