@@ -8,7 +8,7 @@
 
 <div th:if="${not #lists.isEmpty(currentPracticeSessions)}">
     <form th:action="@{'/records/view/' + ${instrumentId}}" method = "post">
-        <p th:text="'You have ' + ${#lists.size(currentPracticeSessions)} + ' practice practiceSessions recorded.'"></p>
+        <p th:text="'You have ' + ${#lists.size(currentPracticeSessions)} + ' practice sessions recorded.'"></p>
 
        <div class="form-group">
            I want to view my most

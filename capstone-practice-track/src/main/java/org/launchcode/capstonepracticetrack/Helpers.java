@@ -132,8 +132,8 @@ public class Helpers {
 
     public static boolean doesSkillAlreadyExist(int instrumentId, String skillName, SkillDao skillDao) {
         String lowercaseSkillName = skillName.toLowerCase();
-        List<Skill> skillContainer = skillDao.findByInstrument_idAndName(instrumentId, lowercaseSkillName);
-        if (skillContainer == null || skillContainer.isEmpty()) {
+        Skill skillContainer = skillDao.findByInstrument_idAndName(instrumentId, lowercaseSkillName);
+        if (skillContainer == null) {
             return false;
         }
         return true;

@@ -1,6 +1,7 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
 
+import org.launchcode.capstonepracticetrack.Helpers;
 import org.launchcode.capstonepracticetrack.models.*;
 import org.launchcode.capstonepracticetrack.models.data.InstrumentDao;
 import org.launchcode.capstonepracticetrack.models.data.PracticeChunkDao;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.nio.channels.SelectionKey;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -108,6 +110,7 @@ public class SessionController {
         Iterable<Skill> givenSkills = currentInstrument.getSkills();
 
 
+        // validate skill name
         if ( enteredSkill.length() < 1 || enteredSkill.length() > 26) {
 
             ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
@@ -125,6 +128,11 @@ public class SessionController {
             return "practice-session/data-entry";
         }
 
+        if (Helpers.doesSkillAlreadyExist(id, enteredSkill, skillDao)) {
+             Skill existingSkill = skillDao.findByInstrument_idAndName(id, enteredSkill);
+        }
+
+        // validate time
         if (enteredTime == null || enteredTime.equals("") || Integer.parseInt(enteredTime) < 1) {
 
             ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
@@ -147,14 +155,20 @@ public class SessionController {
             // PracticeChunk class will require the time to be converted to "int"
             int enteredTimeInt = Integer.parseInt(enteredTime);
 
+            // Check to see if Skill with same name already exists in user's list; if it does, we just use the existing Skill.
+            Skill selectedSkill = new Skill();
 
-            // Create and save the manually added skill
-            Skill newSkill = new Skill(enteredSkill, currentInstrument);
-            skillDao.save(newSkill);
+            if (Helpers.doesSkillAlreadyExist(id, enteredSkill, skillDao)) {
+                selectedSkill = skillDao.findByInstrument_idAndName(id, enteredSkill);
+            } else {
+                // Create and save the manually added skill
+                selectedSkill = new Skill(enteredSkill, currentInstrument);
+                skillDao.save(selectedSkill);
+            }
 
            // Chunk created but not yet assigned to Session; session not created until user finalizes/saves Session
             PracticeChunk newChunk = new PracticeChunk();
-            newChunk.setSkill(newSkill);
+            newChunk.setSkill(selectedSkill);
             newChunk.setTimeInMinutes(enteredTimeInt);
 
             // Pull running chunkList from session, add the new chunk, put updated list back in session
