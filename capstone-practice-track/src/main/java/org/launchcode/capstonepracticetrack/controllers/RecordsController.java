@@ -67,7 +67,7 @@ public class RecordsController {
         Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
 
         // sorts PracticeSessions for selected instrument by highest ID, which will list most recent PracticeSessions first
-        List<PracticeSession> currentPracticeSessions = practiceSessionDao.findByInstrument_idOrderByIdDesc(currentInstrument.getId());
+        List<PracticeSession> currentPracticeSessions = practiceSessionDao.findByInstrument_idOrderByDateDesc(currentInstrument.getId());
 
         // selects specified number of most recent PracticeSessions
         List<PracticeSession> selectedPracticeSessions = Helpers.limitPracticeSessionsBy(currentPracticeSessions, numberOfRecords);

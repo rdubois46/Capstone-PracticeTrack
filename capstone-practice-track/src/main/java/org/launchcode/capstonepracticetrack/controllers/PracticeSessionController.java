@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("practice-session")
-public class SessionController {
+public class PracticeSessionController {
 
     @Autowired
     private InstrumentDao instrumentDao;

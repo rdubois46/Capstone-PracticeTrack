@@ -13,6 +13,8 @@ public interface PracticeSessionDao extends CrudRepository<PracticeSession, Inte
 
     public List<PracticeSession> findByInstrument_idOrderByIdDesc(int id);
 
+    public List<PracticeSession> findByInstrument_idOrderByDateDesc(int id);
+
     public List<PracticeSession> findByUser_id(int id);
 
     public List<PracticeSession> findByInstrument_id(int id);

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("welcome")
-public class WelcomeController {
+public class AuthenticationController {
 
     @Autowired
     private UserDao userDao;
