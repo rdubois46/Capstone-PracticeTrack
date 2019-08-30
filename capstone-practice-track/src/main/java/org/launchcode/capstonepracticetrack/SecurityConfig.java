@@ -41,20 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .regexMatchers("/register").permitAll()
+                .regexMatchers("/welcome/*").permitAll()
                 .regexMatchers("/webjars/.*").permitAll()
                 .regexMatchers("/css/.*").permitAll()
                 .regexMatchers("/login?[^/]*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/login")
+                    .loginPage("/welcome/login")
                     .usernameParameter("email")
                     .defaultSuccessUrl("/", true)
                     .permitAll()
                 .and()
                     .logout()
-                    .logoutUrl("/logout")
+                    .logoutUrl("/profile/logout")
                     .logoutSuccessUrl("/login?logout")
                 .and()
                     .rememberMe();

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("welcome")
-public class AuthenticationController {
+public class AuthenticationController extends AbstractBaseController {
 
     @Autowired
     private UserDao userDao;

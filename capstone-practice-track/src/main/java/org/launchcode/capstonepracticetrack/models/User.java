@@ -3,6 +3,7 @@ package org.launchcode.capstonepracticetrack.models;
 
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,8 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 public class User implements Serializable {
@@ -18,15 +21,13 @@ public class User implements Serializable {
     @GeneratedValue
     private int id;
 
-    @NotNull
-    @Size(min = 3, max = 15, message = "Username must be 5 - 15 characters." )
+    @NotBlank
     private String username;
 
-    @Email
+    @NotBlank
     private String email;
 
-    @NotNull
-    @Size(min = 5, max = 15, message = "Password must be 5 - 15 characters.")
+    @NotBlank
     private String password;
 
     @OneToMany
@@ -41,10 +42,42 @@ public class User implements Serializable {
 
     }
 
-    public User (String username, String password) {
+    public User(@NotBlank String email, @NotBlank String username, @NotBlank String password) {
+        //May not need these validators?
+        if (email == null || email.length() == 0 || !isValidEmail(email))
+            throw new IllegalArgumentException("Email may not be blank");
+
+        if (username == null || username.length() == 0)
+            throw new IllegalArgumentException("username may not be blank");
+
+        if (password == null || password.length() == 0)
+            throw new IllegalArgumentException("password may not be blank");
+
+        this.email = email;
         this.username = username;
+        this.password = password;
     }
 
+    private static boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile("\\S+@\\S+");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User user = (User) obj;
+        return this.username.equals(user.username);
+    }
 
     public void addInstrument(Instrument instrument) {
         this.instruments.add(instrument);
