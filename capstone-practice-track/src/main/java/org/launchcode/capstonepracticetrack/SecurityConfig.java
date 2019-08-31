@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .regexMatchers("/welcome/*").permitAll()
+                .regexMatchers("/welcome/.*").permitAll()
                 .regexMatchers("/webjars/.*").permitAll()
                 .regexMatchers("/css/.*").permitAll()
                 .regexMatchers("/login?[^/]*").permitAll()

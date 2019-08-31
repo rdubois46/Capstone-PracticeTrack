@@ -27,7 +27,6 @@ public class AuthenticationController extends AbstractBaseController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String viewLogin(Model model, Principal user, String error, HttpSession session, @RequestParam(required=false) boolean logout) {
-        model.addAttribute("title", "Welcome to PracticeTrack!");
 
         if (user != null)
             return "redirect:/profile/";
@@ -42,6 +41,8 @@ public class AuthenticationController extends AbstractBaseController {
             model.addAttribute("nullMsg", "No user in session");
 
         }
+
+        model.addAttribute("title", "Welcome to PracticeTrack!");
 
         return "welcome/login";
     }
