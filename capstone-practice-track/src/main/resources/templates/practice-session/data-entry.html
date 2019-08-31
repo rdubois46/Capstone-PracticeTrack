@@ -8,7 +8,7 @@
 <h3>Enter your practice chunk!</h3>
 
 <div th:if="${skillChoice == 'manual' and timeChoice == 'manual'}">
-    <form th:action="@{'/practice-session/data-entry-validation/manual-manual/' + ${instrument.id}}" method = "post">
+    <form th:action="@{/practice-session/data-entry-validation/manual-manual}" method = "post">
         <div class="form-group">
             <label for="skill-case-1">Skill: </label>
             <input id="skill-case-1" type="text" name="enteredSkill" style="width : 230px;" th:value="${enteredSkill}" />
@@ -20,12 +20,13 @@
             <p class="error" th:text="${timeError}"></p>
         </div>
 
+        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
         <input type="submit" value="Save It!" />
     </form>
 </div>
 
 <div th:if="${skillChoice == 'list' and timeChoice == 'manual'}">
-    <form th:action="@{'/practice-session/data-entry-validation/list-manual/' + ${instrument.id}}" method="post" th:object="${practiceChunk}">
+    <form th:action="@{/practice-session/data-entry-validation/list-manual/}" method="post" th:object="${newChunk}">
         <div class="form-group">
             <label for="skill-case-2">Skill: </label>
             <select id="skill-case-2" name="skillId">
@@ -36,10 +37,11 @@
         </div>
         <div class="form-group">
             <label for="time-case-2">Time: </label>
-            <input th:field="*{timeInMinutes}" id="time-case-2" type="number" min="1" step="1"/>
-            <span th:errors="*{timeInMinutes}" class="error"></span>
+            <input class="form-control" th:field="*{timeInMinutes}" id="time-case-2" type="number" min="1" step="1"/>
+            <span class="error" th:errors="*{timeInMinutes}"></span>
         </div>
 
+        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
         <input type="submit" value="Save It!" />
     </form>
 </div>
@@ -72,12 +74,13 @@
 </div>
 
 <div th:if="${not #lists.isEmpty(chunkList)}">
-    <form th:action="@{'/practice-session/save/' + ${instrument.id}}" method="post">
+    <form th:action="@{/practice-session/save}" method="post">
+        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
         <input type="submit" value="Finish and Submit Session!" />
     </form>
 </div>
 
-<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+<p><a th:href="@{/profile}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
 
 
 </body>

@@ -31,12 +31,12 @@ public class SkillController extends AbstractBaseController {
 
         int instrId = Integer.parseInt(instrumentId);
 
-        Instrument givenInstrument = instrumentDao.findById(instrId);
+        Instrument currentInstrument = instrumentDao.findById(instrId);
         Iterable<Skill> currentSkills = skillDao.findByInstrument_id(instrId);
 
 
         model.addAttribute("title", "Add a skill: ");
-        model.addAttribute("instrument", givenInstrument);
+        model.addAttribute("instrument", currentInstrument);
         model.addAttribute("skills", currentSkills);
 
         model.addAttribute(new Skill());
@@ -48,7 +48,7 @@ public class SkillController extends AbstractBaseController {
     public String processAddSkillForm(@ModelAttribute @Valid Skill skill, Errors errors, Model model, String instrumentId) {
 
         int instrId = Integer.parseInt(instrumentId);
-        Instrument givenInstrument = instrumentDao.findById(instrId);
+        Instrument currentInstrument = instrumentDao.findById(instrId);
 
         if (errors.hasErrors()) {
 
@@ -56,7 +56,7 @@ public class SkillController extends AbstractBaseController {
 
             model.addAttribute("title", "Add a skill: ");
             model.addAttribute("skills", currentSkills);
-            model.addAttribute("instrument", givenInstrument);
+            model.addAttribute("instrument", currentInstrument);
 
             return "instrument/add-skill";
         }
@@ -67,7 +67,7 @@ public class SkillController extends AbstractBaseController {
 
             model.addAttribute("title", "Add a skill: ");
             model.addAttribute("skills", currentSkills);
-            model.addAttribute("instrument", givenInstrument);
+            model.addAttribute("instrument", currentInstrument);
             model.addAttribute("alreadyExistsError", "That skill is already in your skill List.");
 
             return "instrument/add-skill";
@@ -79,8 +79,8 @@ public class SkillController extends AbstractBaseController {
         skill.setName(lowercaseSkillName);
 
         // put new skill in DB
-        skill.setInstrument(givenInstrument);
-        givenInstrument.addSkill(skill);
+        skill.setInstrument(currentInstrument);
+        currentInstrument.addSkill(skill);
         skillDao.save(skill);
 
         // get updated list of skills
@@ -88,7 +88,7 @@ public class SkillController extends AbstractBaseController {
 
         model.addAttribute("title", "Add a skill: ");
         model.addAttribute("skills", currentSkills);
-        model.addAttribute("instrument", givenInstrument);
+        model.addAttribute("instrument", currentInstrument);
 
         return "instrument/add-skill";
     }

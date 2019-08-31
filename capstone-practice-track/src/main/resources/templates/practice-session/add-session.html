@@ -9,7 +9,7 @@
 <h3>How will you be entering this practice info?</h3>
 <h4 class="error" th:text="${noSkillsError}"></h4>
 
-<form th:action="@{'/practice-session/data-entry/' + ${instrument.id}}" method="post">
+<form th:action="@{/practice-session/data-entry}" method="post">
     <h4>Skill Choice</h4>
     <div class="form-group">
         <div>
@@ -39,10 +39,11 @@
         <input type="date" id="datePicker" name="date" />
     </div>
 
+    <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
     <input type="submit" value="Go!" />
 </form>
 
-<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+<p><a th:href="@{/profile/}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
 
 
 </body>

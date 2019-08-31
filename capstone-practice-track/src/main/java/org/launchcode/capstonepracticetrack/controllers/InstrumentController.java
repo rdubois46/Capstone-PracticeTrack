@@ -43,21 +43,22 @@ public class InstrumentController extends AbstractBaseController {
         return "instrument/add-instrument";
     }
 
-    @RequestMapping(value="add/{id}", method = RequestMethod.POST)
-    public String processAddInstrument(Model model, @ModelAttribute @Valid Instrument instrument, Errors errors, @ PathVariable int id) {
+    @RequestMapping(value="add", method = RequestMethod.POST)
+    public String processAddInstrument(Model model, @ModelAttribute @Valid Instrument instrument, Errors errors, Principal principal) {
 
+        String userName = principal.getName();
+        User currentUser = userDao.findByUsername(userName);
 
         if (errors.hasErrors()) {
-            Iterable<Instrument> instruments = instrumentDao.findByUser_id(id);
+            Iterable<Instrument> instruments = instrumentDao.findByUser_id(currentUser.getId());
 
             model.addAttribute("title", "Add an instrument");
             model.addAttribute("instruments", instruments);
-            model.addAttribute("userId", id);
+            model.addAttribute("userId", currentUser.getId());
 
-            return "profile/add-instrument";
+            return "instrument/add-instrument";
         }
 
-        User currentUser = userDao.findOne(id);
         instrument.setUser(currentUser);
         instrumentDao.save(instrument);
 
