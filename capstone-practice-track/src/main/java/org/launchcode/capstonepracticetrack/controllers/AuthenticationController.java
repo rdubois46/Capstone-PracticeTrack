@@ -1,10 +1,16 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
+import org.launchcode.capstonepracticetrack.SecurityConfig;
 import org.launchcode.capstonepracticetrack.forms.UserForm;
 import org.launchcode.capstonepracticetrack.models.User;
 import org.launchcode.capstonepracticetrack.models.data.UserDao;
 import org.launchcode.capstonepracticetrack.user.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -13,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
@@ -32,10 +40,10 @@ public class AuthenticationController extends AbstractBaseController {
             return "redirect:/profile/";
 
         if (error != null)
-            model.addAttribute(MESSAGE_KEY, "danger|Your username and/or password are invalid.");
+            model.addAttribute("loginError", "Your username and/or password are invalid.");
 
         if (logout)
-            model.addAttribute(MESSAGE_KEY, "info|You have successfully logged out.");
+            model.addAttribute("logout", "You have successfully logged out.");
 
         if (session.getAttribute("user") == null) {
             model.addAttribute("nullMsg", "No user in session");
@@ -47,32 +55,6 @@ public class AuthenticationController extends AbstractBaseController {
         return "welcome/login";
     }
 
-    /*@RequestMapping(value = "login", method = RequestMethod.POST)
-    public String processLogin(Model model, HttpSession session, @RequestParam String username, @RequestParam String password) {
-        User currentUser = userDao.findByUsername(username);
-
-        if (currentUser == null) {
-            model.addAttribute("nameError", "User does not exist!");
-            model.addAttribute("title", "Welcome to PracticeTrack!");
-            return "welcome/login";
-        }
-
-        if (!currentUser.getPassword().equals(password)) {
-            model.addAttribute("username", username);
-            model.addAttribute("passwordError", "Incorrect password!");
-            model.addAttribute("title", "Welcome to PracticeTrack!");
-            return "welcome/login";
-        }
-
-        model.addAttribute("title", "Login Success! Welcome, " + username + "!");
-
-        // put user in session
-        session.setAttribute("user", currentUser.getId());
-
-        return "redirect:/profile/" + currentUser.getId();
-
-    }*/
-
     @RequestMapping(value="newAccount", method = RequestMethod.GET)
     public String viewNewAccountForm(Model model) {
         model.addAttribute("userForm", new UserForm());
@@ -82,7 +64,7 @@ public class AuthenticationController extends AbstractBaseController {
     }
 
     @RequestMapping(value="newAccount", method = RequestMethod.POST)
-    public String processNewAccountForm(Model model, @ModelAttribute @Valid UserForm userForm, Errors errors,  HttpSession session) {
+    public String processNewAccountForm(Model model, @ModelAttribute @Valid UserForm userForm, Errors errors,  HttpSession session, HttpServletRequest request) throws ServletException {
 
         if (errors.hasErrors()) {
             userForm.setPassword("");
@@ -96,15 +78,29 @@ public class AuthenticationController extends AbstractBaseController {
             userService.save(userForm);
         } catch (UsernameExistsException e) {
             errors.rejectValue("username", "username.alreadyexists", e.getMessage());
+            model.addAttribute("title", "Create an Account");
+            return "welcome/create-account";
         }
 
         User currentUser = userDao.findByUsername(userForm.getUsername());
-        model.addAttribute("title", "Registration Success! Welcome, " + currentUser.getUsername() + "!");
+
 
         // put user in session
-        session.setAttribute("user", currentUser);
 
-        return "redirect:/profile/" + currentUser.getId();
+        session.setAttribute("user", currentUser);
+        session.setAttribute("recentReg", true);
+
+        // log in user upon successful registration
+        authWithHttpServletRequest(request, currentUser.getUsername(), currentUser.getPassword());
+
+        return "redirect:/profile/";
+
+    }
+
+    // method used after successful registration to automatically log in user
+    public void authWithHttpServletRequest(HttpServletRequest request, String username, String password) throws ServletException {
+
+        request.login(username, password);
 
     }
 

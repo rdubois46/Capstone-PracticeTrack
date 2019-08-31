@@ -1,24 +1,28 @@
 package org.launchcode.capstonepracticetrack.forms;
 
+
+
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UserForm {
-    @NotNull
-    @Email(message = "Not a valid email address.")
-    private String email;
 
     @NotNull
     @Size(min = 3, max = 20, message = "Username must be 5 - 20 characters." )
     private String username;
 
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Not a valid email address.")
+    private String email;
+
     @NotNull
     @Size(min = 5, max = 20, message = "Password must be 5 - 20 characters.")
     private String password;
 
-    @NotNull(message = "Passwords do not match")
+    @NotNull(message = "Passwords do not match.")
     private String verifyPassword;
 
     public UserForm() {}

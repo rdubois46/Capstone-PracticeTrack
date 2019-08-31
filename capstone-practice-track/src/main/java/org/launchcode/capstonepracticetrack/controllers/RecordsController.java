@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value="records")
-public class RecordsController {
+public class RecordsController extends AbstractBaseController {
 
     @Autowired
     InstrumentDao instrumentDao;

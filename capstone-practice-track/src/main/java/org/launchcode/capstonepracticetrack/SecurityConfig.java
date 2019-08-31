@@ -1,6 +1,7 @@
 package org.launchcode.capstonepracticetrack;
 
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,10 +10,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 @Configuration
@@ -40,22 +45,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http.authorizeRequests()
-                .regexMatchers("/welcome/.*").permitAll()
+                .antMatchers("/welcome/**").permitAll()
                 .regexMatchers("/webjars/.*").permitAll()
                 .regexMatchers("/css/.*").permitAll()
-                .regexMatchers("/login?[^/]*").permitAll()
+                .regexMatchers("/welcome/login?[^/]*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/welcome/login")
+                        .loginPage("/welcome/login")
                     .usernameParameter("username")
-                    .defaultSuccessUrl("/profile", true)
+                    .defaultSuccessUrl("/profile/", true)
                     .permitAll()
                 .and()
                     .logout()
                     .logoutUrl("/profile/logout")
-                    .logoutSuccessUrl("/profile/logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("/login.html")
                 .and()
                     .rememberMe();
     }
@@ -65,4 +73,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authProvider());
         auth.userDetailsService(userDetailsService);
     }
+
+
 }

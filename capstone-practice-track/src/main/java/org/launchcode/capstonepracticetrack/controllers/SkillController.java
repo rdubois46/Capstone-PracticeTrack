@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("skill")
-public class SkillController {
+public class SkillController extends AbstractBaseController {
 
     @Autowired
     private InstrumentDao instrumentDao;

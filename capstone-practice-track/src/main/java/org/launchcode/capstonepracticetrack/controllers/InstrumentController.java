@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("instrument")
-public class InstrumentController {
+public class InstrumentController extends AbstractBaseController {
 
     @Autowired
     private UserDao userDao;
