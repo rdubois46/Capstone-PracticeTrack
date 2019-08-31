@@ -1,6 +1,7 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
 import org.launchcode.capstonepracticetrack.models.User;
+import org.launchcode.capstonepracticetrack.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 

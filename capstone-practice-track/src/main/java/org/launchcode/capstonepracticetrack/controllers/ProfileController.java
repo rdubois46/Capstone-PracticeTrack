@@ -39,6 +39,6 @@ public class ProfileController {
     @RequestMapping(value = "logout")
     public String logOut(HttpSession session) {
         session.invalidate();
-        return "redirect:/welcome/login";
+        return "redirect:/welcome/login?logout=true";
     }
 }

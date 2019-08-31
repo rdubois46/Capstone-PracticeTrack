@@ -64,6 +64,12 @@ public class User implements Serializable {
         return matcher.matches();
     }
 
+    public List<String> getRoles() {
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add("ROLE_USER");
+        return roles;
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {

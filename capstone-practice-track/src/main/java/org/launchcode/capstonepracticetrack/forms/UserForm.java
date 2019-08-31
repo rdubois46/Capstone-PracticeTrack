@@ -12,7 +12,7 @@ public class UserForm {
 
     @NotNull
     @Size(min = 3, max = 20, message = "Username must be 5 - 20 characters." )
-    private String fullName;
+    private String username;
 
     @NotNull
     @Size(min = 5, max = 20, message = "Password must be 5 - 20 characters.")
@@ -31,12 +31,12 @@ public class UserForm {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

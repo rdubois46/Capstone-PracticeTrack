@@ -49,13 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                     .loginPage("/welcome/login")
-                    .usernameParameter("email")
-                    .defaultSuccessUrl("/", true)
+                    .usernameParameter("username")
+                    .defaultSuccessUrl("/profile", true)
                     .permitAll()
                 .and()
                     .logout()
                     .logoutUrl("/profile/logout")
-                    .logoutSuccessUrl("/login?logout")
+                    .logoutSuccessUrl("/profile/logout")
                 .and()
                     .rememberMe();
     }
