@@ -34,7 +34,7 @@ public class AuthenticationController extends AbstractBaseController {
     private UserDao userDao;
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String viewLogin(Model model, Principal user, String error, HttpSession session, @RequestParam(required=false) boolean logout) {
+    public String viewLogin(Model model, Principal user, String error, HttpSession session, String logout) {
 
         if (user != null)
             return "redirect:/profile/";
@@ -42,7 +42,7 @@ public class AuthenticationController extends AbstractBaseController {
         if (error != null)
             model.addAttribute("loginError", "Your username and/or password are invalid.");
 
-        if (logout)
+        if (logout != null)
             model.addAttribute("logout", "You have successfully logged out.");
 
         if (session.getAttribute("user") == null) {
