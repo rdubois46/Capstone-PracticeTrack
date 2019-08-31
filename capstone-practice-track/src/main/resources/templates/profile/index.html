@@ -2,30 +2,36 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body class="container">
-<h2 th:replace="fragments :: appName"></h2>
-<h1 th:text="${title}">Default Title</h1>
+    <h2 th:replace="fragments :: appName"></h2>
+    <h1 th:text="${title}">Default Title</h1>
 
 
-<div th:if="${instruments != null and !instruments.empty}">
-    <h2>Select an Instrument: </h2>
-    <ul th:each="instrument : ${instruments}">
-        <li th:text="${instrument.name}"></li>
-        <span>
-            <button><a th:href="@{'/skill/add/' + ${instrument.id}}">Add Skill</a></button>
-            <button><a th:href="@{'/practice-session/' + ${instrument.id}}">Create Practice Session</a></button>
-            <button><a th:href="@{'/records/select/' + ${instrument.id}}">View Session Data</a></button>
-        </span>
-    </ul>
-</div>
+    <div th:if="${instruments != null and !instruments.empty}">
+        <h2>Select an Instrument: </h2>
+        <ul th:each="instrument : ${instruments}">
+            <li th:text="${instrument.name}"></li>
+                <div style="display: flex;">
+                    <form th:action="@{/skill/add}">
+                        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+                        <input type="submit" value="Add Skill" />
+                    </form>
+                    <form th:action="@{/practice-session}">
+                        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+                        <input type="submit" value="Create Practice Session" />
+                    </form>
+                    <form th:action="@{/records/select}">
+                        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+                        <input type="submit" value="View Session Data" />
+                    </form>
+                </div>
+        </ul>
+    </div>
 
-<div th:if="${instruments == null or instruments.empty}">
-    <h2>No Instruments Yet!</h2>
-</div>
+    <div th:if="${instruments == null or instruments.empty}">
+        <h2>No Instruments Yet!</h2>
+    </div>
 
-<p><a th:href="@{'/instrument/add/' + ${userId}}">Add an Instrument!</a></p>
-<p><a th:href="@{/profile/logout}">Log Out</a></p>
-
-
-
+    <p><a th:href="@{/instrument/add}">Add an Instrument!</a></p>
+    <p><a th:href="@{/profile/logout}">Log Out</a></p>
 </body>
 </html>

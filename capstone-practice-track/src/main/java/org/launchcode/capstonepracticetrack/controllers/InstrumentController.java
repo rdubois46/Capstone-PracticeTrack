@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("instrument")
@@ -26,21 +27,24 @@ public class InstrumentController extends AbstractBaseController {
     @Autowired
     private InstrumentDao instrumentDao;
 
-    @RequestMapping(value="add/{id}", method = RequestMethod.GET)
-    public String viewInstrumentAddPage(Model model, @PathVariable int id) {
+    @RequestMapping(value="add", method = RequestMethod.GET)
+    public String viewInstrumentAddPage(Model model, Principal principal) {
 
-        Iterable<Instrument> currentInstruments = instrumentDao.findByUser_id(id);
+        String userName = principal.getName();
+        User currentUser = userDao.findByUsername(userName);
+
+        Iterable<Instrument> currentInstruments = instrumentDao.findByUser_id(currentUser.getId());
 
         model.addAttribute("title", "Add an Instrument");
         model.addAttribute("instruments", currentInstruments);
-        model.addAttribute("userId", id);
+        model.addAttribute("userId", currentUser.getId());
         model.addAttribute(new Instrument());
 
-        return "profile/add-instrument";
+        return "instrument/add-instrument";
     }
 
     @RequestMapping(value="add/{id}", method = RequestMethod.POST)
-    public String processAddInstrument(Model model, @ModelAttribute @Valid Instrument instrument, Errors errors, @PathVariable int id) {
+    public String processAddInstrument(Model model, @ModelAttribute @Valid Instrument instrument, Errors errors, @ PathVariable int id) {
 
 
         if (errors.hasErrors()) {
@@ -55,9 +59,8 @@ public class InstrumentController extends AbstractBaseController {
 
         User currentUser = userDao.findOne(id);
         instrument.setUser(currentUser);
-        currentUser.addInstrument(instrument);
         instrumentDao.save(instrument);
 
-        return "redirect:/instrument/add/" + id;
+        return "redirect:/instrument/add";
     }
 }

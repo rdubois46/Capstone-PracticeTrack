@@ -17,17 +17,18 @@
     <h2 th:text="'No skills for ' + ${instrument.name} + ' yet!'"></h2>
 </div>
 
-<form method="post" th:action="@{'/skill/add/' + ${instrument.id}}" th:object="${skill}">
+<form method="post" th:action="@{/skill/add}" th:object="${skill}">
     <div class="form-group">
         <label th:for="skill">Skill name: </label>
-        <input class="form-control" id="skill" type="text" th:field="*{name}" th:value="*{name}" />
+        <input class="form-control" id="skill" type="text" th:field="*{name}" />
         <span class="error" th:errors="*{name}"></span>
         <p class="error" th:text="${alreadyExistsError}"></p>
     </div>
+    <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
     <input type="submit" value="Add Skill" />
 </form>
 
-<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a></p>
+<p><a th:href="@{/profile}">Back to Profile</a></p>
 
 
 </body>

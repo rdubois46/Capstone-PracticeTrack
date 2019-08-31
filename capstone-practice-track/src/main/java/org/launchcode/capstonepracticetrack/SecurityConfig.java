@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/welcome/**").permitAll()
+                .regexMatchers("/welcome/login", "/welcome/newAccount").permitAll()
                 .regexMatchers("/webjars/.*").permitAll()
                 .regexMatchers("/css/.*").permitAll()
                 .regexMatchers("/welcome/login?[^/]*").permitAll()
