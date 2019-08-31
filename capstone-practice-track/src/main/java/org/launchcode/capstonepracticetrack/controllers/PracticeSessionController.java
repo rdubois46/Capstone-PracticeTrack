@@ -39,7 +39,7 @@ public class PracticeSessionController extends AbstractBaseController {
 
 
     // when user clicks "create session" from profile, direct to this controller
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String createPracticeSession(Model model, String instrumentId) {
 
         int instrId = Integer.parseInt(instrumentId);

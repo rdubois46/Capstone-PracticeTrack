@@ -11,15 +11,15 @@
         <ul th:each="instrument : ${instruments}">
             <li th:text="${instrument.name}"></li>
                 <div style="display: flex;">
-                    <form th:action="@{/skill/add}">
+                    <form th:action="@{/skill/}" method="post">
                         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
                         <input type="submit" value="Add Skill" />
                     </form>
-                    <form th:action="@{/practice-session/}">
+                    <form th:action="@{/practice-session/}" method="post">
                         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
                         <input type="submit" value="Create Practice Session" />
                     </form>
-                    <form th:action="@{/records/select}">
+                    <form th:action="@{/records/}" method="post">
                         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
                         <input type="submit" value="View Session Data" />
                     </form>
@@ -31,7 +31,7 @@
         <h2>No Instruments Yet!</h2>
     </div>
 
-    <p><a th:href="@{/instrument/add}">Add an Instrument!</a></p>
+    <p><a th:href="@{/instrument/}">Add an Instrument!</a></p>
     <p><a th:href="@{/profile/logout}">Log Out</a></p>
 </body>
 </html>

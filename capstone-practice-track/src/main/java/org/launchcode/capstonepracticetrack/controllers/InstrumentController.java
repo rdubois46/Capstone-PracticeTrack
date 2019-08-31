@@ -27,7 +27,7 @@ public class InstrumentController extends AbstractBaseController {
     @Autowired
     private InstrumentDao instrumentDao;
 
-    @RequestMapping(value="add", method = RequestMethod.GET)
+    @RequestMapping(value="/", method = RequestMethod.GET)
     public String viewInstrumentAddPage(Model model, Principal principal) {
 
         String userName = principal.getName();
@@ -54,14 +54,20 @@ public class InstrumentController extends AbstractBaseController {
 
             model.addAttribute("title", "Add an instrument");
             model.addAttribute("instruments", instruments);
-            model.addAttribute("userId", currentUser.getId());
 
             return "instrument/add-instrument";
         }
 
+        // save new instrument
         instrument.setUser(currentUser);
         instrumentDao.save(instrument);
 
-        return "redirect:/instrument/add";
+        // pull out updated list that contains the newly added instrument
+        Iterable<Instrument> instruments = instrumentDao.findByUser_id(currentUser.getId());
+
+        model.addAttribute("title", "Add an instrument");
+        model.addAttribute("instruments", instruments);
+
+        return "instrument/add-instrument";
     }
 }

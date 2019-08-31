@@ -26,7 +26,7 @@ public class SkillController extends AbstractBaseController {
     @Autowired
     private SkillDao skillDao;
 
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String viewAddSkillPage(Model model, String instrumentId) {
 
         int instrId = Integer.parseInt(instrumentId);

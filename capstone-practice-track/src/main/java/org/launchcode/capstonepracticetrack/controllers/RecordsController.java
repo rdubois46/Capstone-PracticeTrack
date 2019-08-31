@@ -33,38 +33,39 @@ public class RecordsController extends AbstractBaseController {
     PracticeSessionDao practiceSessionDao;
 
 
-    @RequestMapping(value="select/{instrumentId}", method = RequestMethod.GET)
-    public String recordsSelect(Model model, @PathVariable int instrumentId, HttpSession httpSession) {
+    @RequestMapping(value="/", method = RequestMethod.POST)
+    public String recordsSelect(Model model, String instrumentId, HttpSession httpSession) {
 
-        Instrument currentInstrument = instrumentDao.findOne(instrumentId);
+        int instrId = Integer.parseInt(instrumentId);
+        Instrument currentInstrument = instrumentDao.findOne(instrId);
+
         User currentUser = currentInstrument.getUser();
         int userId = currentUser.getId();
 
         Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
-        Iterable<PracticeSession> currentPracticeSessions =  practiceSessionDao.findByInstrument_id(instrumentId);
+        Iterable<PracticeSession> currentPracticeSessions =  practiceSessionDao.findByInstrument_id(instrId);
 
-        httpSession.setAttribute("currentPracticeSessions", currentPracticeSessions);
+        /*httpSession.setAttribute("currentPracticeSessions", currentPracticeSessions);
         httpSession.setAttribute("currentUser", currentUser);
         httpSession.setAttribute("currentInstrument", currentInstrument);
-        httpSession.setAttribute("allUserInstruments", allUserInstruments);
+        httpSession.setAttribute("allUserInstruments", allUserInstruments);*/
 
 
         model.addAttribute("title", "Select number of sessions to view for " + currentInstrument.getName() + ": ");
-        model.addAttribute("userId", userId);
         model.addAttribute("currentPracticeSessions", currentPracticeSessions);
-        model.addAttribute("instrumentId", instrumentId);
+        model.addAttribute("instrument", currentInstrument);
 
         return "records/select-session-records";
     }
 
-    @RequestMapping(value="view/{InstrumentId}", method = RequestMethod.POST)
-    public String recordsView(Model model, @PathVariable int InstrumentId, HttpSession httpSession, int numberOfRecords) {
+    @RequestMapping(value="view", method = RequestMethod.POST)
+    public String recordsView(Model model, int numberOfRecords, String instrumentId, HttpSession httpSession) {
 
-        Instrument currentInstrument = instrumentDao.findOne(InstrumentId);
+        int instrId = Integer.parseInt(instrumentId);
+        Instrument currentInstrument = instrumentDao.findOne(instrId);
         User currentUser = currentInstrument.getUser();
-        int userId = currentUser.getId();
 
-        Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(userId);
+        Iterable<Instrument> allUserInstruments = instrumentDao.findByUser_id(currentUser.getId());
 
         // sorts PracticeSessions for selected instrument by highest ID, which will list most recent PracticeSessions first
         List<PracticeSession> currentPracticeSessions = practiceSessionDao.findByInstrument_idOrderByDateDesc(currentInstrument.getId());
@@ -79,10 +80,10 @@ public class RecordsController extends AbstractBaseController {
         List<SkillDataRow> selectedSkillDataRows = Helpers.createSkillDataRows(selectedPracticeSessions);
 
         model.addAttribute("title", "Practice Table for " + currentInstrument.getName() + ": ");
-        model.addAttribute("userId", userId);
         model.addAttribute("selectedPracticeSessions", selectedPracticeSessions);
         model.addAttribute("selectedSkills", selectedSkills);
         model.addAttribute("selectedSkillDataRows", selectedSkillDataRows);
+        model.addAttribute("instrument", currentInstrument);
 
         return "records/view-session-records";
 

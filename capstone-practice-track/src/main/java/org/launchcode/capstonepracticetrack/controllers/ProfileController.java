@@ -21,7 +21,7 @@ public class ProfileController extends AbstractBaseController {
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String viewProfilePage(Model model, HttpSession session, Principal principal) {
         String userName = principal.getName();
         User currentUser = userDao.findByUsername(userName);
@@ -31,7 +31,6 @@ public class ProfileController extends AbstractBaseController {
 
         model.addAttribute("appName", "PracticeTrack");
         model.addAttribute("title", "Welcome, " + currentUser.getUsername() + "!");
-        model.addAttribute("userId", currentUser.getId());
         model.addAttribute("instruments", instruments);
 
         return "profile/index";

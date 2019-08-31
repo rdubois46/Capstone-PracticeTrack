@@ -7,7 +7,7 @@
 
 
 <div th:if="${not #lists.isEmpty(currentPracticeSessions)}">
-    <form th:action="@{'/records/view/' + ${instrumentId}}" method = "post">
+    <form th:action="@{/records/view}" method = "post">
         <p th:text="'You have ' + ${#lists.size(currentPracticeSessions)} + ' practice sessions recorded.'"></p>
 
        <div class="form-group">
@@ -16,6 +16,7 @@
            recent practiceSessions.
        </div>
 
+        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
         <input type="submit" value="Let's see it!" />
     </form>
 </div>
@@ -26,7 +27,7 @@
 
 
 
-<p><a th:href="@{'/profile/' + ${userId}}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+<p><a th:href="@{/profile/}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
 
 
 </body>
