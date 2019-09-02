@@ -1,23 +1,17 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
-import org.launchcode.capstonepracticetrack.SecurityConfig;
 import org.launchcode.capstonepracticetrack.forms.UserForm;
 import org.launchcode.capstonepracticetrack.models.User;
 import org.launchcode.capstonepracticetrack.models.data.UserDao;
 import org.launchcode.capstonepracticetrack.user.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,17 +32,10 @@ public class AuthenticationController extends AbstractBaseController {
 
         if (user != null)
             return "redirect:/profile/";
-
         if (error != null)
             model.addAttribute("loginError", "Your username and/or password are invalid.");
-
         if (logout != null)
             model.addAttribute("logout", "You have successfully logged out.");
-
-        if (session.getAttribute("user") == null) {
-            model.addAttribute("nullMsg", "No user in session");
-
-        }
 
         model.addAttribute("title", "Welcome to PracticeTrack!");
 

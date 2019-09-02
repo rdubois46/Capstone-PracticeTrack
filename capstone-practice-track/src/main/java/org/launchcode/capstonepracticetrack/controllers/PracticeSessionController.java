@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.nio.channels.SelectionKey;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Controller
 @RequestMapping("practice-session")
@@ -51,6 +51,7 @@ public class PracticeSessionController extends AbstractBaseController {
         model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
         model.addAttribute("instrument", currentInstrument);
         model.addAttribute("skills", givenSkills);
+        model.addAttribute("date", LocalDate.now());
 
         return "practice-session/add-session";
     }
@@ -76,7 +77,22 @@ public class PracticeSessionController extends AbstractBaseController {
         }
 
         // put date in http session; will be used later as field in PracticeSession when user finalizes/saves PracticeSession
-        LocalDate localDate = LocalDate.parse(date);
+        // if date is invalid, return page with error message
+        LocalDate localDate;
+
+        try {
+            localDate = LocalDate.parse(date);
+        } catch (Exception e) {
+
+            model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
+            model.addAttribute("instrument", currentInstrument);
+            model.addAttribute("skills", givenSkills);
+            model.addAttribute("date", LocalDate.now());
+            model.addAttribute("dateError", "Not a valid date.");
+
+            return "practice-session/add-session";
+        }
+
         session.setAttribute("practiceSessionDate", localDate);
 
 

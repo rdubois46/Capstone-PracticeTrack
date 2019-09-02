@@ -4,7 +4,7 @@
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
 <h1 th:text="${title}">Default Title</h1>
-<script type="text/javascript" th:src="@{/js/current-date.js}"></script>
+<!--<script type="text/javascript" th:src="@{/js/current-date.js}"></script>-->
 
 <h3>How will you be entering this practice info?</h3>
 <h4 class="error" th:text="${noSkillsError}"></h4>
@@ -36,7 +36,8 @@
 
     <div class="form-group">
         <label for="datePicker">Select Date</label>
-        <input type="date" id="datePicker" name="date" />
+        <input type="date" id="datePicker" name="date" th:value="${date}" />
+        <span class="error" th:text="${dateError}"></span>
     </div>
 
     <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
