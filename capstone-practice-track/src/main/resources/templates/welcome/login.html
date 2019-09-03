@@ -4,10 +4,10 @@
 
 <body class="container">
 
-<h1 th:text="${title}">Default Title</h1>
+<h1 class="title" th:text="${title}">Default Title</h1>
 <nav th:replace="fragments :: navigation"></nav>
 
-<form method="post" style="max-width:600px;">
+<form id="login-form" method="post" style="max-width:600px;">
     <div class="form-group">
         <label for="username">Username: </label>
         <input type="text" class="form-control" id="username" name="username" />

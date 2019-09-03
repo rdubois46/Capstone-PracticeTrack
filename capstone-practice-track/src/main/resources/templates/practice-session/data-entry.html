@@ -3,12 +3,12 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
-<h1 th:text="${title}">Default Title</h1>
+<h1 class="title" th:text="${title}">Default Title</h1>
 
 <h3>Enter your practice chunk!</h3>
 
 <div th:if="${skillChoice == 'manual' and timeChoice == 'manual'}">
-    <form th:action="@{/practice-session/data-entry-validation/manual-manual}" method = "post">
+    <form class="add-item" th:action="@{/practice-session/data-entry-validation/manual-manual}" method = "post">
         <div class="form-group">
             <label for="skill-case-1">Skill: </label>
             <input id="skill-case-1" type="text" name="enteredSkill" style="width : 230px;" th:value="${enteredSkill}" />
@@ -26,7 +26,7 @@
 </div>
 
 <div th:if="${skillChoice == 'list' and timeChoice == 'manual'}">
-    <form th:action="@{/practice-session/data-entry-validation/list-manual/}" method="post" th:object="${newChunk}">
+    <form class="add-item" th:action="@{/practice-session/data-entry-validation/list-manual/}" method="post" th:object="${newChunk}">
         <div class="form-group">
             <label for="skill-case-2">Skill: </label>
             <select id="skill-case-2" name="skillId">
@@ -80,7 +80,7 @@
     </form>
 </div>
 
-<p><a th:href="@{/profile/}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+<div th:replace="fragments :: footer-nav"></div>
 
 
 </body>

@@ -3,48 +3,50 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
-<h1 th:text="${title}">Default Title</h1>
+<h1 class="title" th:text="${title}">Default Title</h1>
 <!--<script type="text/javascript" th:src="@{/js/current-date.js}"></script>-->
 
-<h3>How will you be entering this practice info?</h3>
-<h4 class="error" th:text="${noSkillsError}"></h4>
+<div class="container" style="margin: 2em 0 2em 0;">
+    <h3>How will you be entering this practice info?</h3>
+    <h4 class="error" th:text="${noSkillsError}"></h4>
 
-<form th:action="@{/practice-session/data-entry}" method="post">
-    <h4>Skill Choice</h4>
-    <div class="form-group">
-        <div>
-            <input type="radio" id="skill-choice-list" name="skillChoice" value="list" />
-            <label for="skill-choice-list">Select Skill from list</label>
+    <form th:action="@{/practice-session/data-entry}" method="post">
+        <h4>Skill Choice</h4>
+        <div class="form-group">
+            <div>
+                <input type="radio" id="skill-choice-list" name="skillChoice" value="list" />
+                <label for="skill-choice-list">Select Skill from list</label>
+            </div>
+            <div>
+                <input type="radio" id="skill-choice-manual" name="skillChoice" value="manual" checked="checked" />
+                <label for="skill-choice-manual">Enter Skill manually</label>
+            </div>
         </div>
-        <div>
-            <input type="radio" id="skill-choice-manual" name="skillChoice" value="manual" checked="checked" />
-            <label for="skill-choice-manual">Enter Skill manually</label>
+        <h4>Timer Choice</h4>
+        <div class="form-group">
+            <div>
+                <input type="radio" id="time-choice-timer" name="timeChoice" value="timer" />
+                <label for="time-choice-timer">Use Timer</label>
+            </div>
+            <div>
+                <input type="radio" id="time-choice-manual" name="timeChoice" value="manual"  checked="checked" />
+                <label for="time-choice-manual">Enter Time manually</label>
+            </div>
         </div>
-    </div>
-    <h4>Timer Choice</h4>
-    <div class="form-group">
-        <div>
-            <input type="radio" id="time-choice-timer" name="timeChoice" value="timer" />
-            <label for="time-choice-timer">Use Timer</label>
+
+
+        <div class="form-group">
+            <label for="datePicker">Select Date</label>
+            <input type="date" id="datePicker" name="date" th:value="${date}" />
+            <span class="error" th:text="${dateError}"></span>
         </div>
-        <div>
-            <input type="radio" id="time-choice-manual" name="timeChoice" value="manual"  checked="checked" />
-            <label for="time-choice-manual">Enter Time manually</label>
-        </div>
-    </div>
 
+        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+        <input type="submit" value="Go!" />
+    </form>
+</div>
 
-    <div class="form-group">
-        <label for="datePicker">Select Date</label>
-        <input type="date" id="datePicker" name="date" th:value="${date}" />
-        <span class="error" th:text="${dateError}"></span>
-    </div>
-
-    <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
-    <input type="submit" value="Go!" />
-</form>
-
-<p><a th:href="@{/profile/}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+<div th:replace="fragments :: footer-nav"></div>
 
 
 </body>

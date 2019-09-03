@@ -1,19 +1,68 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:fragment="head">
-
-    <meta charset="UTF-8" />
     <title th:text="${title}">Title</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-w+8Gqjk9Cuo6XH9HKHG5t5I1VR4YBNdPt/29vwgfZR485eoEJZ8rJRbm3TR32P6k" crossorigin="anonymous" />
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <style> .error {
             color: red;
             }
+
             .table-head {
             text-align: center;
             }
+
+            .footer-nav {
+            margin: 2em 0;
+            }
+
+            .title {
+            text-align: center;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            margin-left: auto;
+            margin-right: auto;
+            }
+
+            .no-data {
+            font-style: italic;
+            font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+            margin: 2em 0 2em 0;
+            }
+
+            .index-button {
+            margin: 1em 1em;
+            }
+
+            .profile-list-item-buttons {
+            margin: 0 0 2em 2em;
+            }
+
+            .add-item {
+            margin: 1em 0 1em 0;
+            }
+
+            .instrument-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            }
+
+            #account-form {
+            max-width:600px;
+            margin-top: 1em;
+            margin-bottom:1em;
+            }
+
+            #login-form {
+            margin-top: 1em;
+            margin-bottom:1em;
+            }
+
     </style>
 
 </head>
@@ -25,6 +74,10 @@
     <a th:href="@{'/welcome/login'}">Login Page</a> |
     <a th:href="@{'/welcome/newAccount'}">Create Account</a>
 </nav>
+
+<div th:fragment="footer-nav" class="footer-nav">
+    <a th:href="@{/profile/}">Back to Profile </a>  |  <a th:href="@{/profile/logout}"> Log Out</a>
+</div>
 
 </body>
 </html>

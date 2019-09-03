@@ -3,17 +3,17 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
-<h1 th:text="${title}">Default Title</h1>
+<h1 class="title" th:text="${title}">Default Title</h1>
 
 
-<div th:if="${not #lists.isEmpty(currentPracticeSessions)}">
+<div class="container" style="margin: 2em 0 2em 0;" th:if="${not #lists.isEmpty(currentPracticeSessions)}">
     <form th:action="@{/records/view}" method = "post">
         <p th:text="'You have ' + ${#lists.size(currentPracticeSessions)} + ' practice sessions recorded.'"></p>
 
        <div class="form-group">
            I want to view my most
            <input type="number" name="numberOfRecords" step="1" min="1" th:max="${#lists.size(currentPracticeSessions)}" />
-           recent practiceSessions.
+           recent practice sessions.
        </div>
 
         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
@@ -22,12 +22,12 @@
 </div>
 
 <div th:if="${#lists.isEmpty(currentPracticeSessions)}">
-    <h3>No  practice sessions yet recorded for this instrument!</h3>
+    <h3 class="no-data">No  practice sessions yet recorded for this instrument!</h3>
 </div>
 
 
 
-<p><a th:href="@{/profile/}">Back to Profile</a> | <a th:href="@{/profile/logout}">Log Out</a></p>
+<div th:replace="fragments :: footer-nav"></div>
 
 
 </body>

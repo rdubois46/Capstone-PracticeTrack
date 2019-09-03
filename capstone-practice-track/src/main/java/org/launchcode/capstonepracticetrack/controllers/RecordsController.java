@@ -50,7 +50,7 @@ public class RecordsController extends AbstractBaseController {
         httpSession.setAttribute("allUserInstruments", allUserInstruments);*/
 
 
-        model.addAttribute("title", "Select number of sessions to view for " + currentInstrument.getName() + ": ");
+        model.addAttribute("title", "View practice data for the " + currentInstrument.getName() + ": ");
         model.addAttribute("currentPracticeSessions", currentPracticeSessions);
         model.addAttribute("instrument", currentInstrument);
 

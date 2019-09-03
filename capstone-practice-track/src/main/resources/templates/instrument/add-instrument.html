@@ -3,21 +3,21 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
-<h1 th:text="${title}">Default Title</h1>
+<h1 class="title" th:text="${title}">Default Title</h1>
 
 
 <div th:if="${instruments != null and !instruments.empty}">
     <h2>Current Instruments </h2>
-    <ul th:each="instrument : ${instruments}">
-        <li th:text="${instrument.name}"></li>
+    <ul class="list-group" th:each="instrument : ${instruments}">
+        <li class="list-group-item" th:text="${instrument.name}"></li>
     </ul>
 </div>
 
 <div th:if="${instruments == null or instruments.empty}">
-    <h2>No Instruments Yet!</h2>
+    <h3 class="no-data">No Instruments Yet!</h3>
 </div>
 
-<form method="post" th:action="@{/instrument/add}" th:object="${instrument}">
+<form class="add-item" method="post" th:action="@{/instrument/add}" th:object="${instrument}">
     <div class="form-group">
         <label th:for="instrument">Instrument name: </label>
         <input class="form-control" id="instrument" type="text" th:field="*{name}" th:value="*{name}" />
@@ -26,7 +26,7 @@
     <input type="submit" value="Add Instrument" />
 </form>
 
-<p><a th:href="@{/profile/}">Back to Profile</a></p>
+<div th:replace="fragments :: footer-nav"></div>
 
 
 </body>

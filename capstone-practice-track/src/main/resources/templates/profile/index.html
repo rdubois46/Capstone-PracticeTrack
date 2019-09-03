@@ -3,35 +3,37 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
     <h2 th:replace="fragments :: appName"></h2>
-    <h1 th:text="${title}">Default Title</h1>
+    <h1 class="title" th:text="${title}">Default Title</h1>
 
 
-    <div th:if="${instruments != null and !instruments.empty}">
+    <div class="container" style="margin: 2em 0 2em 0;" th:if="${instruments != null and !instruments.empty}">
         <h2>Select an Instrument: </h2>
-        <ul th:each="instrument : ${instruments}">
-            <li th:text="${instrument.name}"></li>
-                <div style="display: flex;">
-                    <form th:action="@{/skill/}" method="post">
+        <ul class="list-group" th:each="instrument : ${instruments}">
+            <li class="list-group-item instrument-name" th:text="${instrument.name}"></li>
+                <div class="profile-list-item-buttons" style="display: flex;">
+                    <form class="index-button" th:action="@{/skill/}" method="post">
                         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
-                        <input type="submit" value="Add Skill" />
+                        <input class="btn btn-primary" type="submit" value="Add Skill" />
                     </form>
-                    <form th:action="@{/practice-session/}" method="post">
+                    <form class="index-button" th:action="@{/practice-session/}" method="post">
                         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
-                        <input type="submit" value="Create Practice Session" />
+                        <input class="btn btn-success" type="submit" value="Create Practice Session" />
                     </form>
-                    <form th:action="@{/records/}" method="post">
+                    <form class="index-button" th:action="@{/records/}" method="post">
                         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
-                        <input type="submit" value="View Session Data" />
+                        <input class="btn btn-warning" type="submit" value="View Session Data" />
                     </form>
                 </div>
         </ul>
     </div>
 
     <div th:if="${instruments == null or instruments.empty}">
-        <h2>No Instruments Yet!</h2>
+        <h3 class="no-data">No Instruments Yet!</h3>
     </div>
 
-    <p><a th:href="@{/instrument/}">Add an Instrument!</a></p>
-    <p><a th:href="@{/profile/logout}">Log Out</a></p>
+    <div class="footer-nav">
+        <a th:href="@{/instrument/}">Add an Instrument! </a> |  <a th:href="@{/profile/logout}"> Log Out</a>
+    </div>
+
 </body>
 </html>
