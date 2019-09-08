@@ -1,6 +1,7 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
 
+import org.joda.time.Interval;
 import org.launchcode.capstonepracticetrack.Helpers;
 import org.launchcode.capstonepracticetrack.models.*;
 import org.launchcode.capstonepracticetrack.models.data.InstrumentDao;
@@ -10,6 +11,7 @@ import org.launchcode.capstonepracticetrack.models.data.SkillDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StopWatch;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,10 @@ import javax.validation.Valid;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+
 
 
 @Controller
@@ -55,6 +60,7 @@ public class PracticeSessionController extends AbstractBaseController {
 
         return "practice-session/add-session";
     }
+
 
 
     // when user makes selections for how to enter their practice data, direct to this controller
@@ -95,7 +101,6 @@ public class PracticeSessionController extends AbstractBaseController {
 
         session.setAttribute("practiceSessionDate", localDate);
 
-
         // create "running" practice chunk list to be stored in HttpSession until user decides to finalize/save practice session
         ArrayList<PracticeChunk> chunkList = new ArrayList<>();
         session.setAttribute("chunkList", chunkList);
@@ -114,6 +119,7 @@ public class PracticeSessionController extends AbstractBaseController {
 
         return "practice-session/data-entry";
     }
+
 
 
     // Case 1: User selected manual skill entry and manual time entry
@@ -188,6 +194,7 @@ public class PracticeSessionController extends AbstractBaseController {
     }
 
 
+
     // Case 2: User wants list-based skill entry and manual time entry
     @RequestMapping(value = "data-entry-validation/list-manual/", method = RequestMethod.POST)
     public String validatePracticeDataCase2(@ModelAttribute @Valid PracticeChunk newChunk, Errors errors, Model model, @RequestParam int skillId, String instrumentId, HttpSession session) {
@@ -234,6 +241,14 @@ public class PracticeSessionController extends AbstractBaseController {
 
     }
 
+    //Case 3 - user wants manual skill entry with an automatic timer
+    @RequestMapping(value = "manual-timer", method = RequestMethod.POST)
+    public String validatePracticeDataCase3(Model model, String InstrumentId) {
+        return null;
+    }
+
+
+
     // user is ready to finalize/save their PracticeSession
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String savePracticeSession(Model model, String instrumentId, HttpSession session) {
@@ -263,5 +278,54 @@ public class PracticeSessionController extends AbstractBaseController {
         return "practice-session/confirmation";
     }
 
+
+
+    @RequestMapping(value="start-timer", method=RequestMethod.POST)
+    public String startTimer(Model model, @RequestParam String instrumentId, @RequestParam String timerActive, @RequestParam String skillChoice, @RequestParam(required=false) String enteredSkill, HttpSession session) {
+
+        int instrId = Integer.parseInt(instrumentId);
+        Instrument currentInstrument = instrumentDao.findById(instrId);
+
+        if (skillChoice.equals("manual")) {
+            if (enteredSkill.length() < 1 || enteredSkill.length() > 26) {
+
+                ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
+
+                model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
+                model.addAttribute("instrument", currentInstrument);
+                model.addAttribute("skillChoice", "manual");
+                model.addAttribute("timeChoice", "timer");
+                model.addAttribute("skillError", "The skill must be 1-25 characters in length.");
+                model.addAttribute("chunkList", chunkList);
+
+                return "practice-session/data-entry";
+            }
+
+            // Check if Skill with same name already exists in user's list; if it does, we just use the existing Skill.
+            Skill selectedSkill;
+            if (Helpers.doesSkillAlreadyExist(instrId, enteredSkill, skillDao)) {
+                selectedSkill = skillDao.findByInstrument_idAndName(instrId, enteredSkill);
+            } else {
+                // Create and save the manually added skill
+                selectedSkill = new Skill(enteredSkill, currentInstrument);
+                skillDao.save(selectedSkill);
+            }
+            session.setAttribute("skillChoice", "manual");
+            session.setAttribute("timeChoice", "timer");
+        } else {
+            session.setAttribute("skillChoice", "list");
+            session.setAttribute("timeChoice", "timer");
+        }
+
+
+        Date startTime = new Date();
+        session.setAttribute("startTime", startTime);
+
+        model.addAttribute("title", "Time Your Practice");
+        model.addAttribute("instrument", currentInstrument);
+
+        return "practice-session/timer";
+
+    }
 
 }

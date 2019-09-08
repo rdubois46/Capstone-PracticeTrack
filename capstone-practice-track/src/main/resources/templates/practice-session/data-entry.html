@@ -47,6 +47,24 @@
 </div>
 
 <div th:if="${skillChoice == 'manual' and timeChoice == 'timer'}">
+    <form class="add-item" th:action="@{/practice-session/timer}" method = "post">
+        <div class="form-group">
+            <label for="skill-case-3">Skill: </label>
+            <input id="skill-case-3" type="text" name="enteredSkill" style="width : 230px;" th:value="${enteredSkill}" required />
+            <p class="error" th:text="${skillError}" ></p>
+        </div>
+        <div th:if="${!timerActive and !timeRecorded}">
+            <div class="form-group">
+                <label for="time-case-3">Time (mins): </label>
+                <input id="time-case-3" type="number" min="1" step="1" name="enteredTime" />
+                <p class="error" th:text="${timeError}"></p>
+            </div>
+
+            <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+            <input type="hidden" name="timerActive" value="true">
+            <input th:if="${timerActive}" type="submit" value="Start Timer" />
+        </div>
+    </form>
 </div>
 
 <div th:if="${skillChoice == 'list' and timeChoice == 'timer'}">

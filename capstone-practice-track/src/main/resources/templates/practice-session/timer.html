@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+    <h2 th:replace="fragments :: appName"></h2>
+    <h1 class="title" th:text="${title}">Default Title</h1>
+
+
+    <form class="index-button" th:action="@{/skill/}" method="post">
+        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+        <input class="btn btn-primary" type="submit" value="Check Timer" />
+    </form>
+    <form class="index-button" th:action="@{/skill/}" method="post">
+        <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+        <input class="btn btn-primary" type="submit" value="Add Skill" />
+    </form>
+
+
+
+
+
+</body>
+</html>

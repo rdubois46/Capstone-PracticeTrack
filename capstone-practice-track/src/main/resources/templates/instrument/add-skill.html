@@ -9,7 +9,7 @@
 <div th:if="${skills != null and !skills.empty}">
     <h2 th:text="'Current Skills for ' + ${instrument.name} + ': '"></h2>
     <ul class="list-group" th:each="skill: ${skills}">
-        <li class="list-group-item" th:text="${skill.name}"></li>
+        <li class="list-group-item" th:text="'- ' + ${skill.name}"></li>
     </ul>
 </div>
 
