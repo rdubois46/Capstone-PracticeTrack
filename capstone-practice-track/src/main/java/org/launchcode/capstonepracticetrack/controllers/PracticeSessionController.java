@@ -1,7 +1,7 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
 
-import org.joda.time.Interval;
+import org.apache.commons.lang3.time.StopWatch;
 import org.launchcode.capstonepracticetrack.Helpers;
 import org.launchcode.capstonepracticetrack.models.*;
 import org.launchcode.capstonepracticetrack.models.data.InstrumentDao;
@@ -11,7 +11,6 @@ import org.launchcode.capstonepracticetrack.models.data.SkillDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StopWatch;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +19,8 @@ import javax.validation.Valid;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-
+import java.util.concurrent.TimeUnit;
 
 
 @Controller
@@ -281,11 +278,13 @@ public class PracticeSessionController extends AbstractBaseController {
 
 
     @RequestMapping(value="start-timer", method=RequestMethod.POST)
-    public String startTimer(Model model, @RequestParam String instrumentId, @RequestParam String timerActive, @RequestParam String skillChoice, @RequestParam(required=false) String enteredSkill, HttpSession session) {
+    public String startTimer(Model model, @RequestParam String instrumentId, @RequestParam String timerActive, @RequestParam String skillChoice, @RequestParam(required=false) String enteredSkill, @RequestParam(required=false) int skillId, HttpSession session) {
 
         int instrId = Integer.parseInt(instrumentId);
         Instrument currentInstrument = instrumentDao.findById(instrId);
+        Skill selectedSkill;
 
+        // 'manual' skill choice requires same validation for skill as Case 1 controller
         if (skillChoice.equals("manual")) {
             if (enteredSkill.length() < 1 || enteredSkill.length() > 26) {
 
@@ -302,7 +301,6 @@ public class PracticeSessionController extends AbstractBaseController {
             }
 
             // Check if Skill with same name already exists in user's list; if it does, we just use the existing Skill.
-            Skill selectedSkill;
             if (Helpers.doesSkillAlreadyExist(instrId, enteredSkill, skillDao)) {
                 selectedSkill = skillDao.findByInstrument_idAndName(instrId, enteredSkill);
             } else {
@@ -312,20 +310,46 @@ public class PracticeSessionController extends AbstractBaseController {
             }
             session.setAttribute("skillChoice", "manual");
             session.setAttribute("timeChoice", "timer");
+            selectedSkill = skillDao.findByInstrument_idAndName(instrId, selectedSkill.getName());
+        // else, 'list' is skill choice and requires no validation
         } else {
             session.setAttribute("skillChoice", "list");
             session.setAttribute("timeChoice", "timer");
+            selectedSkill = skillDao.findOne(skillId);
         }
 
-
-        Date startTime = new Date();
-        session.setAttribute("startTime", startTime);
+        StopWatch timer = new StopWatch();
+        timer.start();
+        session.setAttribute("timer", timer);
 
         model.addAttribute("title", "Time Your Practice");
         model.addAttribute("instrument", currentInstrument);
+        model.addAttribute("skill", selectedSkill);
 
         return "practice-session/timer";
 
+    }
+
+    @RequestMapping(value = "check-timer", method = RequestMethod.POST)
+    public String checkTimer(Model model, @RequestParam String instrumentId, @RequestParam int skillId, HttpSession session) {
+        int instrId = Integer.parseInt(instrumentId);
+        Instrument currentInstrument = instrumentDao.findById(instrId);
+        Skill selectedSkill = skillDao.findOne(skillId);
+
+        StopWatch timer = (StopWatch) session.getAttribute("timer");
+        double hours = timer.getTime(TimeUnit.HOURS);
+        double minutes = timer.getTime(TimeUnit.MINUTES);
+        double seconds = timer.getTime(TimeUnit.SECONDS);
+
+        model.addAttribute("title", "Time Your Practice");
+        model.addAttribute("instrument", currentInstrument);
+        model.addAttribute("skill", selectedSkill);
+        model.addAttribute("elapsedTime", true);
+        model.addAttribute("hours", hours);
+        model.addAttribute("minutes", minutes);
+        model.addAttribute("seconds", seconds);
+
+        return "practice-session/timer";
     }
 
 }

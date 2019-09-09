@@ -36,6 +36,7 @@ dependencies {
 	compile 'org.springframework.session:spring-session'
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('mysql:mysql-connector-java')
+	compile 'org.apache.commons:commons-configuration2:2.5'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile 'org.springframework.security:spring-security-test'
