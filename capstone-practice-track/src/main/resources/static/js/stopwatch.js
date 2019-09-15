@@ -167,5 +167,6 @@ hours = (hours < 10) ? "0" + hours : hours;
   milliseconds = (milliseconds < 100) ? (milliseconds < 10) ? "00" + milliseconds : "0" + milliseconds : milliseconds;
   timerDisplay.innerHTML = hours + ':' + minutes + ':' + seconds + ':' + milliseconds;
 
-  document.getElementById("time").value = seconds;
+  document.getElementById("timeMinutes").value = minutes;
+  document.getElementById("timeHours").value = hours;
 }

@@ -105,7 +105,6 @@ public class PracticeSessionController extends AbstractBaseController {
         // .getAttribute returns type "Obj"; here we have to cast it to the desired type "ArrayList<PracticeChunk>"
         chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
 
-
         model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
         model.addAttribute("instrument", currentInstrument);
         model.addAttribute("skills", givenSkills);
@@ -240,39 +239,9 @@ public class PracticeSessionController extends AbstractBaseController {
 
 
 
-    // user is ready to finalize/save their PracticeSession
-    @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String savePracticeSession(Model model, String instrumentId, HttpSession session) {
-
-        int instrId = Integer.parseInt(instrumentId);
-
-        PracticeSession newPracticeSession = new PracticeSession();
-
-        // set all PracticeSession fields and save
-        LocalDate date = (LocalDate) session.getAttribute("practiceSessionDate");
-        newPracticeSession.setDate(date);
-
-        Instrument practiceSessionInstrument = instrumentDao.findOne(instrId);
-        newPracticeSession.setInstrument(practiceSessionInstrument);
-
-        User practiceSessionUser = practiceSessionInstrument.getUser();
-        newPracticeSession.setUser(practiceSessionUser);
-
-        ArrayList<PracticeChunk> practiceSessionChunks = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
-        newPracticeSession.setPracticeChunks(practiceSessionChunks);
-
-        practiceSessionDao.save(newPracticeSession);
-
-        model.addAttribute("title", "Session Saved!");
-        model.addAttribute("userId", session.getAttribute("user"));
-
-        return "practice-session/confirmation";
-    }
-
-
     //Case 3 - user wants manual skill entry with an automatic timer
     @RequestMapping(value="data-entry-validation/manual-timer", method=RequestMethod.POST)
-    public String startTimer(Model model, @RequestParam String instrumentId, @RequestParam(required=false) String time, @RequestParam(required=false) String enteredSkill, @RequestParam(required=false) String skillId, HttpSession session) {
+    public String validatePracticeDataCase3(Model model, @RequestParam String instrumentId, @RequestParam(required=false) String timeMinutes, @RequestParam(required=false) String timeHours, @RequestParam(required=false) String enteredSkill, @RequestParam(required=false) String skillId, HttpSession session) {
 
         int instrId = Integer.parseInt(instrumentId);
         Instrument currentInstrument = instrumentDao.findById(instrId);
@@ -304,9 +273,8 @@ public class PracticeSessionController extends AbstractBaseController {
                 skillDao.save(selectedSkill);
             }
 
-
             selectedSkill = skillDao.findByInstrument_idAndName(instrId, selectedSkill.getName());
-
+            ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
 
             model.addAttribute("title", "Time Your Practice");
             model.addAttribute("instrument", currentInstrument);
@@ -314,25 +282,43 @@ public class PracticeSessionController extends AbstractBaseController {
             model.addAttribute("skillChoice", "manual");
             model.addAttribute("timeChoice", "timer");
             model.addAttribute("stopwatch", true);
-
+            model.addAttribute("chunkList", chunkList);
 
             return "practice-session/data-entry";
         }
 
-        int recordedTimeInMinutes = Integer.parseInt(time);
+        int recordedMinutes = Integer.parseInt(timeMinutes);
+        int recordedHours = Integer.parseInt(timeHours);
 
+        int totalRecordedMinutes = recordedMinutes + (recordedHours * 60);
+
+        // validate time; if less than 1, return to timer with error message
+        if (totalRecordedMinutes < 1) {
+
+            selectedSkill = skillDao.findOne(Integer.parseInt(skillId));
+            ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
+
+            model.addAttribute("title", "Time Your Practice");
+            model.addAttribute("instrument", currentInstrument);
+            model.addAttribute("skill", selectedSkill);
+            model.addAttribute("skillChoice", "manual");
+            model.addAttribute("timeChoice", "timer");
+            model.addAttribute("stopwatch", true);
+            model.addAttribute("timeError", "Time cannot be less than 1 minute.");
+            model.addAttribute("chunkList", chunkList);
+
+            return "practice-session/data-entry";
+        }
 
         PracticeChunk newChunk = new PracticeChunk();
         selectedSkill = skillDao.findOne(Integer.parseInt(skillId));
         newChunk.setSkill(selectedSkill);
-        newChunk.setTimeInMinutes(recordedTimeInMinutes);
-
+        newChunk.setTimeInMinutes(totalRecordedMinutes);
 
         // Pull running chunkList from Http session, add the new chunk, put updated list back in Http session
         ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
         chunkList.add(newChunk);
         session.setAttribute("chunkList", chunkList);
-
 
         model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
         model.addAttribute("instrument", currentInstrument);
@@ -340,30 +326,115 @@ public class PracticeSessionController extends AbstractBaseController {
         model.addAttribute("timeChoice", "timer");
         model.addAttribute("chunkList", chunkList);
 
-
         return "practice-session/data-entry";
     }
 
-    @RequestMapping(value = "check-timer", method = RequestMethod.POST)
-    public String checkTimer(Model model, @RequestParam String instrumentId, @RequestParam int skillId, HttpSession session) {
+
+
+    //Case 4 - user wants list-based skill entry with an automatic timer
+    @RequestMapping(value="data-entry-validation/list-timer", method=RequestMethod.POST)
+    public String validatePracticeDataCase4 (Model model, @RequestParam String instrumentId, @RequestParam(required=false) String timeMinutes, @RequestParam(required=false) String timeHours, @RequestParam(required=false) String timerActive, @RequestParam(required=false) String skillId, HttpSession session ) {
         int instrId = Integer.parseInt(instrumentId);
         Instrument currentInstrument = instrumentDao.findById(instrId);
-        Skill selectedSkill = skillDao.findOne(skillId);
+        Iterable<Skill> givenSkills = currentInstrument.getSkills();
+        ArrayList<PracticeChunk> chunkList = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
 
-        StopWatch timer = (StopWatch) session.getAttribute("timer");
-        double hours = timer.getTime(TimeUnit.HOURS);
-        double minutes = timer.getTime(TimeUnit.MINUTES);
-        double seconds = timer.getTime(TimeUnit.SECONDS);
+        // if no skill currently selected, present list of skills in view to choose from
+        if (skillId == null) {
 
-        model.addAttribute("title", "Time Your Practice");
-        model.addAttribute("instrument", currentInstrument);
-        model.addAttribute("skill", selectedSkill);
-        model.addAttribute("elapsedTime", true);
-        model.addAttribute("hours", hours);
-        model.addAttribute("minutes", minutes);
-        model.addAttribute("seconds", seconds);
+            model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
+            model.addAttribute("instrument", currentInstrument);
+            model.addAttribute("skills", givenSkills);
+            model.addAttribute("skillChoice", "list");
+            model.addAttribute("timeChoice", "timer");
+            model.addAttribute("chunkList", chunkList);
 
-        return "practice-session/timer";
+            return "practice-session/data-entry";
+        }
+
+        Skill selectedSkill = skillDao.findOne(Integer.parseInt(skillId));
+
+        if (timerActive == null) {
+
+            model.addAttribute("title", "Time Your Practice");
+            model.addAttribute("instrument", currentInstrument);
+            model.addAttribute("skill", selectedSkill);
+            model.addAttribute("skillChoice", "list");
+            model.addAttribute("timeChoice", "timer");
+            model.addAttribute("stopwatch", true);
+            model.addAttribute("chunkList", chunkList);
+
+            return "practice-session/data-entry";
+
+        } else {
+
+            int recordedMinutes = Integer.parseInt(timeMinutes);
+            int recordedHours = Integer.parseInt(timeHours);
+
+            int totalRecordedMinutes = recordedMinutes + (recordedHours * 60);
+
+            // validate time; if less than 1, return to timer with error message
+            if (totalRecordedMinutes < 1) {
+
+                model.addAttribute("title", "Time Your Practice");
+                model.addAttribute("instrument", currentInstrument);
+                model.addAttribute("skill", selectedSkill);
+                model.addAttribute("skillChoice", "list");
+                model.addAttribute("timeChoice", "timer");
+                model.addAttribute("stopwatch", true);
+                model.addAttribute("timeError", "Time cannot be less than 1 minute.");
+                model.addAttribute("chunkList", chunkList);
+
+                return "practice-session/data-entry";
+            }
+
+            PracticeChunk newChunk = new PracticeChunk();
+            newChunk.setSkill(selectedSkill);
+            newChunk.setTimeInMinutes(totalRecordedMinutes);
+
+            // Pull running chunkList from Http session, add the new chunk, put updated list back in Http session
+            chunkList.add(newChunk);
+            session.setAttribute("chunkList", chunkList);
+
+            model.addAttribute("title", "Create new practice session for the " + currentInstrument.getName());
+            model.addAttribute("instrument", currentInstrument);
+            model.addAttribute("skills", givenSkills);
+            model.addAttribute("skillChoice", "list");
+            model.addAttribute("timeChoice", "timer");
+            model.addAttribute("chunkList", chunkList);
+
+            return "practice-session/data-entry";
+        }
     }
 
+
+
+    // user is ready to finalize/save their PracticeSession
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    public String savePracticeSession(Model model, String instrumentId, HttpSession session) {
+
+        int instrId = Integer.parseInt(instrumentId);
+
+        PracticeSession newPracticeSession = new PracticeSession();
+
+        // set all PracticeSession fields and save
+        LocalDate date = (LocalDate) session.getAttribute("practiceSessionDate");
+        newPracticeSession.setDate(date);
+
+        Instrument practiceSessionInstrument = instrumentDao.findOne(instrId);
+        newPracticeSession.setInstrument(practiceSessionInstrument);
+
+        User practiceSessionUser = practiceSessionInstrument.getUser();
+        newPracticeSession.setUser(practiceSessionUser);
+
+        ArrayList<PracticeChunk> practiceSessionChunks = (ArrayList<PracticeChunk>) session.getAttribute("chunkList");
+        newPracticeSession.setPracticeChunks(practiceSessionChunks);
+
+        practiceSessionDao.save(newPracticeSession);
+
+        model.addAttribute("title", "Session Saved!");
+        model.addAttribute("userId", session.getAttribute("user"));
+
+        return "practice-session/confirmation";
+    }
 }
