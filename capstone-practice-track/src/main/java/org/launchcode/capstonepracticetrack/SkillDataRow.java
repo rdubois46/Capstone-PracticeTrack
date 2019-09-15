@@ -13,7 +13,7 @@ public class SkillDataRow {
 
     private ArrayList<HashMap<PracticeSession, Integer>> skillChunks = new ArrayList<>();
 
-    private int total = 0;
+    private double total = 0;
 
     private double average = 0;
 
@@ -88,7 +88,7 @@ public class SkillDataRow {
         this.average = Helpers.round(this.total / this.skillChunks.size(), 2);
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 

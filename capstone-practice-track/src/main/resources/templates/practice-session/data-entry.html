@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body class="container">
+
 <h2 th:replace="fragments :: appName"></h2>
 <h1 class="title" th:text="${title}">Default Title</h1>
 
@@ -46,8 +47,8 @@
     </form>
 </div>
 
-<div th:if="${skillChoice == 'manual' and timeChoice == 'timer'}">
-    <form class="add-item" th:action="@{/practice-session/start-timer}" method = "post">
+<!--<div th:if="${skillChoice == 'manual' and timeChoice == 'timer'}">
+    <form class="add-item" th:action="@{/practice-session/data-entry-validation/manual-timer}" method = "post">
         <div class="form-group">
             <label for="skill-case-3">Skill: </label>
             <input id="skill-case-3" type="text" name="enteredSkill" style="width : 230px;" th:value="${enteredSkill}" required="true" />
@@ -55,12 +56,49 @@
         </div>
         <div class="form-group">
             <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
-            <input type="hidden" name="timerActive" value="true" />
+            &lt;!&ndash; <input type="hidden" name="timerActive" value="true" />&ndash;&gt;
             <input class="btn btn-primary" type="submit" value="Start Timer" />
         </div>
 
     </form>
+</div>-->
+
+<div th:if="${skillChoice == 'manual' and timeChoice == 'timer'}">
+    <div th:if="${stopwatch == null}">
+        <form class="add-item" th:action="@{/practice-session/data-entry-validation/manual-timer}" method = "post">
+            <div class="form-group">
+                <label for="skill-case-3">Skill: </label>
+                <input id="skill-case-3" type="text" name="enteredSkill" style="width : 230px;" th:value="${enteredSkill}" />
+                <p class="error" th:text="${skillError}" ></p>
+            </div>
+
+            <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+            <input type="submit" value="Time Your Practice for this Skill!" />
+        </form>
+    </div>
+
+    <div th:if="${stopwatch}" id="timerContainer">
+        <h5 th:text="'currently practicing: ' + ${skill.name}"></h5>
+        <div class="timer" onclick="startTimer()">Start Timer!</div>
+        <div class="startTimer reset" onclick="startTimer()" >
+            <i class="fas fa-play"></i>
+        </div>
+        <div class="pauseTimer reset" onclick="pauseTimer()" >
+            <i class="fas fa-pause"></i>
+        </div>
+        <div class="resetTimer reset" onclick="resetTimer()">Reset</div>
+
+        <script type="text/javascript" th:src="@{/js/stopwatch.js}"></script>
+        <form th:action="@{/practice-session/data-entry-validation/manual-timer/}" method="post">
+            <input type="hidden" id="time" name="time" value="" />
+            <input th:if="${skill}" type="hidden" name="skillId" th:value="${skill.id}" />
+            <input type="hidden" name="instrumentId" th:value="${instrument.id}"  />
+            <input type="submit" value="Record Time!" />
+        </form>
+    </div>
+
 </div>
+
 
 <div th:if="${skillChoice == 'list' and timeChoice == 'timer'}">
 </div>

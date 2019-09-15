@@ -6,6 +6,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous" />
+
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" rel="stylesheet" integrity="sha384-w+8Gqjk9Cuo6XH9HKHG5t5I1VR4YBNdPt/29vwgfZR485eoEJZ8rJRbm3TR32P6k" crossorigin="anonymous" />
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -52,6 +55,24 @@
             font-weight: bold;
             }
 
+            .stopwatch {
+            display: inline-block;
+            background-color: white;
+            border: 1px solid #eee;
+            padding: 5px;
+            margin: 5px;
+            }
+
+            .stopwatch span {
+            font-weight: bold;
+            display: block;
+            }
+
+            .stopwatch a {
+              padding-right: 5px;
+              text-decoration: none;
+            }
+
             #account-form {
             max-width:600px;
             margin-top: 1em;
@@ -61,6 +82,37 @@
             #login-form {
             margin-top: 1em;
             margin-bottom:1em;
+            }
+
+            #timerContainer {
+              font-family: 'Source Sans Pro', sans-serif;
+              font-weight: 300;
+              width:700px;
+              margin:20px auto;
+              min-height: 60px;
+              border-top:0px;
+            }
+            .timer, .reset {
+              float:left;
+              width: 54%;
+              padding: 20px 0;
+              font-size: 24px;
+              text-align:center;
+              color: #fff;
+              background: #A90000;
+              cursor: pointer
+            }
+            .reset {
+              background: #550000;
+              color: white;
+              width:14.9%;
+              border-left: 1px solid #990000;
+            }
+            .reset:hover {
+              background: #CC0000;
+            }
+            .lighter {
+              background: #CC0000
             }
 
     </style>
