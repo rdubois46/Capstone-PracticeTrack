@@ -75,13 +75,7 @@ public class SkillController extends AbstractBaseController {
         }
 
         // makes the skill name lowercase in DB so we can easily check with Helpers.doesSkillAlreadyExist for future skill entries
-        String lowercaseSkillName =  skill.getName().toLowerCase();
-        skill.setName(lowercaseSkillName);
-
-        // put new skill in DB
-        skill.setInstrument(currentInstrument);
-        currentInstrument.addSkill(skill);
-        skillDao.save(skill);
+        Helpers.saveAndPersistLowercaseSkill(currentInstrument, skill, skillDao);
 
         // get updated list of skills
         Iterable<Skill> currentSkills = skillDao.findByInstrument_id(instrId);

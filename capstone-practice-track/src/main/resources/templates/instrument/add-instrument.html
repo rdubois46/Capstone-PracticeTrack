@@ -22,6 +22,7 @@
         <label th:for="instrument">Instrument name: </label>
         <input class="form-control" id="instrument" type="text" th:field="*{name}" th:value="*{name}" />
         <span class="error" th:errors="*{name}"></span>
+        <span class="error" th:text="${alreadyExistsError}"></span>
     </div>
     <input type="submit" value="Add Instrument" />
 </form>

@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface SkillDao extends CrudRepository<Skill, Integer> {
-    public List<Skill> findByInstrument_id(int id);
-    public Skill findByInstrument_idAndName(int id, String name);
+    List<Skill> findByInstrument_id(int id);
+    Skill findByInstrument_idAndName(int id, String name);
 }

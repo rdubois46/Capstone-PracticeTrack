@@ -1,6 +1,7 @@
 package org.launchcode.capstonepracticetrack.controllers;
 
 
+import org.launchcode.capstonepracticetrack.Helpers;
 import org.launchcode.capstonepracticetrack.models.Instrument;
 import org.launchcode.capstonepracticetrack.models.User;
 import org.launchcode.capstonepracticetrack.models.data.InstrumentDao;
@@ -47,9 +48,10 @@ public class InstrumentController extends AbstractBaseController {
 
         String userName = principal.getName();
         User currentUser = userDao.findByUsername(userName);
+        Iterable<Instrument> instruments = instrumentDao.findByUser_id(currentUser.getId());
+
 
         if (errors.hasErrors()) {
-            Iterable<Instrument> instruments = instrumentDao.findByUser_id(currentUser.getId());
 
             model.addAttribute("title", "Add an instrument");
             model.addAttribute("instruments", instruments);
@@ -57,12 +59,20 @@ public class InstrumentController extends AbstractBaseController {
             return "instrument/add-instrument";
         }
 
-        // save new instrument
-        instrument.setUser(currentUser);
-        instrumentDao.save(instrument);
+        if (Helpers.doesInstrumentAlreadyExist(currentUser, instrument.getName(), instrumentDao)) {
+
+            model.addAttribute("title", "Add an instrument");
+            model.addAttribute("instruments", instruments);
+            model.addAttribute("alreadyExistsError", "That instrument is already in your list.");
+
+            return "instrument/add-instrument";
+        }
+
+        // save new instrument as lowercase
+        Helpers.saveAndPersistLowercaseInstrument(currentUser, instrument, instrumentDao);
 
         // pull out updated list that contains the newly added instrument
-        Iterable<Instrument> instruments = instrumentDao.findByUser_id(currentUser.getId());
+        instruments = instrumentDao.findByUser_id(currentUser.getId());
 
         model.addAttribute("title", "Add an instrument");
         model.addAttribute("instruments", instruments);

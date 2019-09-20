@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 @Transactional
 public interface InstrumentDao extends CrudRepository<Instrument, Integer> {
-    public List<Instrument> findByUser_id(int id);
-
-    public Instrument findById(int id);
+    List<Instrument> findByUser_id(int id);
+    Instrument findByUser_idAndName(int id, String name);
+    Instrument findById(int id);
 }

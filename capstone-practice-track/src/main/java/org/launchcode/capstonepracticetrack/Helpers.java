@@ -1,8 +1,7 @@
 package org.launchcode.capstonepracticetrack;
 
-import org.launchcode.capstonepracticetrack.models.PracticeChunk;
-import org.launchcode.capstonepracticetrack.models.PracticeSession;
-import org.launchcode.capstonepracticetrack.models.Skill;
+import org.launchcode.capstonepracticetrack.models.*;
+import org.launchcode.capstonepracticetrack.models.data.InstrumentDao;
 import org.launchcode.capstonepracticetrack.models.data.PracticeSessionDao;
 import org.launchcode.capstonepracticetrack.models.data.SkillDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,12 +92,27 @@ public class Helpers {
         return skillDataRowsList;
     }
 
-    // This method courtesy of the good folks at Stack Overflow. Thank you for sharing your knowledge.
-    public static double round (double value, int precision) {
-        int scale = (int) Math.pow(10, precision);
-        return (double) Math.round(value * scale) / scale;
+    public static boolean doesInstrumentAlreadyExist(User user, String instrumentName, InstrumentDao instrumentDao) {
+        String lowercaseInstrumentName = instrumentName.toLowerCase();
+        Instrument instrumentContainer = instrumentDao.findByUser_idAndName(user.getId(), lowercaseInstrumentName);
+        if (instrumentContainer == null) {
+            return false;
+        }
+        return true;
     }
 
+    public static Instrument makeInstrumentNameLowercase (Instrument instrument) {
+        String lowercaseInstrumentName =  instrument.getName().toLowerCase();
+        instrument.setName(lowercaseInstrumentName);
+
+        return instrument;
+    }
+
+    public static void saveAndPersistLowercaseInstrument (User user, Instrument instrument, InstrumentDao instrumentDao) {
+        Instrument lowercaseInstrument = makeInstrumentNameLowercase(instrument);
+        lowercaseInstrument.setUser(user);
+        instrumentDao.save(lowercaseInstrument);
+    }
 
     public static boolean doesSkillAlreadyExist(int instrumentId, String skillName, SkillDao skillDao) {
         String lowercaseSkillName = skillName.toLowerCase();
@@ -107,6 +121,25 @@ public class Helpers {
             return false;
         }
         return true;
+    }
+
+    public static Skill makeSkillNameLowercase (Skill skill) {
+        String lowercaseSkillName =  skill.getName().toLowerCase();
+        skill.setName(lowercaseSkillName);
+
+        return skill;
+    }
+
+    public static void saveAndPersistLowercaseSkill (Instrument instrument, Skill skill, SkillDao skillDao) {
+        Skill lowercaseSkill = makeSkillNameLowercase(skill);
+        lowercaseSkill.setInstrument(instrument);
+        skillDao.save(lowercaseSkill);
+    }
+
+    // This method courtesy of the good folks at Stack Overflow. Thank you for sharing your knowledge.
+    public static double round (double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
     }
 
 }
