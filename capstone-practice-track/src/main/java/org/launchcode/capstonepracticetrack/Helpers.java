@@ -41,36 +41,6 @@ public class Helpers {
         return allSkillsList;
     }
 
-    // returns list of unique skill ids practiced during this Session
-    public static List<Integer> getSkillIds(PracticeSession givenPracticeSession) {
-        List<Integer> skillIdList = new ArrayList<>();
-        List<Skill> skillList = Helpers.getSkillsPracticed(givenPracticeSession);
-
-        for (Skill skill : skillList) {
-            Integer id = skill.getId();
-            skillIdList.add(id);
-        }
-
-        return skillIdList;
-    }
-
-    // returns list of all unique skill ids practiced across a selected group of Sessions
-    public static List<Integer> getAllSkillsIdsPracticed(List<PracticeSession> selectedPracticeSessions) {
-        List<Integer> allSkillIdsList = new ArrayList<>();
-
-        for (PracticeSession givenPracticeSession : selectedPracticeSessions) {
-            List<Integer> skillIdList = Helpers.getSkillIds(givenPracticeSession);
-            for (Integer givenId : skillIdList) {
-                if (!allSkillIdsList.contains(givenId)) {
-                    allSkillIdsList.add(givenId);
-                }
-
-            }
-        }
-
-        return allSkillIdsList;
-    }
-
     // used to get specified number of sessions from existing list of sessions
     public static List<PracticeSession> limitPracticeSessionsBy(List<PracticeSession> givenPracticeSessions, int count) {
         if (givenPracticeSessions.isEmpty()) {
