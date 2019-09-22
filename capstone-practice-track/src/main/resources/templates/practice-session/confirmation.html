@@ -3,9 +3,23 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
+<nav th:replace="fragments:: generalNav"></nav>
 <h1 class="title" th:text="${title}">Default Title</h1>
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <form class="index-button" th:action="@{/profile/}">
+            <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+            <input class="btn btn-primary" type="submit" value="Back to Profile" />
+        </form>
+        <form class="index-button" th:action="@{/practice-session/}" method="post">
+            <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+            <input class="btn btn-success" type="submit" value="Add Another Session" />
+        </form>
+        <form class="index-button" th:action="@{/records/}" method="post">
+            <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
+            <input class="btn btn-warning" type="submit" value="View Session Data" />
+        </form>
+    </div>
 
 
-<div th:replace="fragments :: footer-nav"></div>
 </body>
 </html>

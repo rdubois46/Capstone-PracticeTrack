@@ -5,9 +5,10 @@
 <body class="container">
 
 <h1 class="title" th:text="${title}">Default Title</h1>
-<nav th:replace="fragments :: navigation"></nav>
+<nav th:replace="fragments:: loginNav"></nav>
 
-<form id="login-form" method="post" style="max-width:600px;">
+
+<form class="bottom-element" id="login-form" method="post" style="max-width:600px;">
     <div class="form-group">
         <label for="username">Username: </label>
         <input type="text" class="form-control" id="username" name="username" />
@@ -22,7 +23,9 @@
     <input type="submit" value="Log In" />
 </form>
 
-<h4 th:text="${logout}"></h4>
+<h4 class="bottom-element text-success font-italic"  th:text="${logout}"></h4>
+
+<nav th:replace="fragments:: loginNav"></nav>
 
 
 

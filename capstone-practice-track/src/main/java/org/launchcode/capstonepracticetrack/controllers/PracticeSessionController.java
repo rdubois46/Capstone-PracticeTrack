@@ -434,6 +434,7 @@ public class PracticeSessionController extends AbstractBaseController {
 
         model.addAttribute("title", "Session Saved!");
         model.addAttribute("userId", session.getAttribute("user"));
+        model.addAttribute("instrument", practiceSessionInstrument);
 
         return "practice-session/confirmation";
     }

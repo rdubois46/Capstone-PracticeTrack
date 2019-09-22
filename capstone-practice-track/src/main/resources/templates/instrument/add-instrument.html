@@ -3,6 +3,8 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
+<nav th:replace="fragments:: generalNav"></nav>
+
 <h1 class="title" th:text="${title}">Default Title</h1>
 
 
@@ -13,22 +15,23 @@
     </ul>
 </div>
 
-<div th:if="${instruments == null or instruments.empty}">
+<div th:if="${instruments == null or instruments.empty}" class="bottom-element">
     <h3 class="no-data">No Instruments Yet!</h3>
 </div>
 
-<form class="add-item" method="post" th:action="@{/instrument/add}" th:object="${instrument}">
-    <div class="form-group">
-        <label th:for="instrument">Instrument name: </label>
-        <input class="form-control" id="instrument" type="text" th:field="*{name}" th:value="*{name}" />
-        <span class="error" th:errors="*{name}"></span>
-        <span class="error" th:text="${alreadyExistsError}"></span>
-    </div>
-    <input type="submit" value="Add Instrument" />
-</form>
+<div class="bottom-element">
+    <form class="add-item" method="post" th:action="@{/instrument/add}" th:object="${instrument}">
+        <div class="form-group">
+            <label th:for="instrument">Instrument name: </label>
+            <input class="form-control" id="instrument" type="text" th:field="*{name}" th:value="*{name}" />
+            <span class="error" th:errors="*{name}"></span>
+            <span class="error" th:text="${alreadyExistsError}"></span>
+        </div>
+        <input type="submit" value="Add Instrument" />
+    </form>
+</div>
 
-<div th:replace="fragments :: footer-nav"></div>
-
+<nav th:replace="fragments:: generalNav"></nav>
 
 </body>
 </html>

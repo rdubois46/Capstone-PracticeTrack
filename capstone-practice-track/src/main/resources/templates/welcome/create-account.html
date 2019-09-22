@@ -4,10 +4,11 @@
 
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
+<nav th:replace="fragments:: loginNav"></nav>
 
 <h1 class="title" th:text="${title}">Default Title</h1>
 <nav th:replace="fragments :: navigation"></nav>
-<form method="post" id="account-form" th:object="${userForm}">
+<form class="bottom-element" method="post" id="account-form" th:object="${userForm}">
     <div class="form-group">
         <label for="username">Username: </label>
         <input type="text" class="form-control" id="username" th:field="*{username}" th:value="*{username}" />
@@ -34,6 +35,8 @@
     </div>
 
 </form>
+
+<nav th:replace="fragments:: loginNav"></nav>
 
 </body>
 </html>

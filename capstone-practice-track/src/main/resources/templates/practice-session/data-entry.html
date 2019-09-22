@@ -4,12 +4,14 @@
 <body class="container">
 
 <h2 th:replace="fragments :: appName"></h2>
+<nav th:replace="fragments:: generalNav"></nav>
+
 <h1 class="title" th:text="${title}">Default Title</h1>
 
 <h3>Enter your practice chunk!</h3>
 
 <!--Case 1: manual skill entry, manual time entry-->
-<div th:if="${skillChoice == 'manual' and timeChoice == 'manual'}">
+<div th:if="${skillChoice == 'manual' and timeChoice == 'manual'}" class="bottom-element">
     <form class="add-item" th:action="@{/practice-session/data-entry-validation/manual-manual}" method = "post">
         <div class="form-group">
             <label for="skill-case-1">Skill: </label>
@@ -28,7 +30,7 @@
 </div>
 
 <!--Case 2: list-based skill entry, manual time entry-->
-<div th:if="${skillChoice == 'list' and timeChoice == 'manual'}">
+<div th:if="${skillChoice == 'list' and timeChoice == 'manual'}" class="bottom-element">
     <form class="add-item" th:action="@{/practice-session/data-entry-validation/list-manual/}" method="post" th:object="${newChunk}">
         <div class="form-group">
             <label for="skill-case-2">Pick a Skill: </label>
@@ -50,7 +52,7 @@
 </div>
 
 <!--Case 3: manual skill entry, stopwatch time entry-->
-<div th:if="${skillChoice == 'manual' and timeChoice == 'timer'}">
+<div th:if="${skillChoice == 'manual' and timeChoice == 'timer'}" class="bottom-element">
     <!--subcase 1: user still entering skill, not yet ready for stopwatch-->
     <div th:if="${stopwatch == null}">
         <form class="add-item" th:action="@{/practice-session/data-entry-validation/manual-timer}" method = "post">
@@ -91,7 +93,7 @@
 </div>
 
 <!--Case 4: list-based skill entry, stopwatch time entry-->
-<div th:if="${skillChoice == 'list' and timeChoice == 'timer'}">
+<div th:if="${skillChoice == 'list' and timeChoice == 'timer'}" class="bottom-element">
     <!--subcase 1: user still selecting skill, not yet ready for stopwatch-->
     <div th:if="${stopwatch == null}">
         <form class="add-item" th:action="@{/practice-session/data-entry-validation/list-timer/}" method="post" >
@@ -134,11 +136,11 @@
     </div>
 </div>
 
-<div th:if="${#lists.isEmpty(chunkList)}">
+<div th:if="${#lists.isEmpty(chunkList)}" class="bottom-element">
     <h4>-- Nothing in Practice Session yet --</h4>
 </div>
 
-<div th:if="${not #lists.isEmpty(chunkList)}">
+<div th:if="${not #lists.isEmpty(chunkList)}" class="bottom-element">
     <table class="table">
         <thead>
             <tr>
@@ -155,14 +157,14 @@
     </table>
 </div>
 
-<div th:if="${not #lists.isEmpty(chunkList)}">
+<div class="bottom-element" th:if="${not #lists.isEmpty(chunkList)}">
     <form th:action="@{/practice-session/save}" method="post">
         <input type="hidden" th:value="${instrument.id}" name="instrumentId" />
         <input type="submit" value="Finish and Submit Session!" />
     </form>
 </div>
 
-<div th:replace="fragments :: footer-nav"></div>
+<nav th:replace="fragments:: generalNav"></nav>
 
 
 </body>

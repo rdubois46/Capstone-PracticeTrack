@@ -36,10 +36,14 @@
             margin-right: auto;
             }
 
+            .bottom-element {
+            margin-bottom: 3em;
+            }
+
             .no-data {
             font-style: italic;
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-            margin: 2em 0 2em 0;
+            margin: 3em 0 3em 0;
             }
 
             .index-button {
@@ -124,7 +128,7 @@
 </head>
 
 <body>
-<nav th:fragment="appNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav th:fragment="profileNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -138,6 +142,38 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/profile/logout}">Log Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<nav th:fragment="generalNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/profile/}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/profile/logout}">Log Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<nav th:fragment="loginNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/welcome/login}">Log in</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/welcome/newAccount}">Create Account</a>
             </li>
         </ul>
     </div>
