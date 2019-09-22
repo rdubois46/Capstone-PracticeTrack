@@ -3,6 +3,7 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
     <h2 th:replace="fragments :: appName"></h2>
+    <nav th:replace="fragments:: appNav"></nav>
     <h1 class="title" th:text="${title}">Default Title</h1>
 
 
@@ -31,9 +32,7 @@
         <h3 class="no-data">No Instruments Yet!</h3>
     </div>
 
-    <div class="footer-nav">
-        <a th:href="@{/instrument/}">Add an Instrument! </a> |  <a th:href="@{/profile/logout}"> Log Out</a>
-    </div>
+    <nav th:replace="fragments:: appNav"></nav>
 
 </body>
 </html>

@@ -3,15 +3,16 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 <h2 th:replace="fragments :: appName"></h2>
+
 <h1 class="title" th:text="${title}">Default Title</h1>
 <!--<script type="text/javascript" th:src="@{/js/current-date.js}"></script>-->
 
 <div class="container" style="margin: 2em 0 2em 0;">
-    <h3>How will you be entering this practice info?</h3>
+    <h3><i>How will you be entering this practice info?</i></h3>
     <h4 class="error" th:text="${noSkillsError}"></h4>
 
     <form th:action="@{/practice-session/data-entry}" method="post">
-        <h4>Skill Choice</h4>
+        <h4>Skill Entry</h4>
         <div class="form-group">
             <div>
                 <input type="radio" id="skill-choice-list" name="skillChoice" value="list" />
@@ -22,7 +23,7 @@
                 <label for="skill-choice-manual">Enter Skill manually</label>
             </div>
         </div>
-        <h4>Timer Choice</h4>
+        <h4>Time Entry</h4>
         <div class="form-group">
             <div>
                 <input type="radio" id="time-choice-timer" name="timeChoice" value="timer" />
